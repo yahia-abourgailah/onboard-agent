@@ -1,0 +1,63 @@
+name: Deploy
+
+# Runs after code lands on a long-lived branch. The `resolve` job maps the
+# branch to a GitHub Environment; the `deploy` job then inherits that
+# environment's protection rules (required reviewers, wait timers) and secrets.
+#   dev     -> development
+#   staging -> staging
+#   main    -> production
+on:
+  push:
+    branches: [dev, staging, main]
+
+# Never run two deploys to the same environment at once; let the latest win.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    name: Resolve environment
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.map.outputs.environment }}
+    steps:
+      - id: map
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          case "$BRANCH" in
+            main)    echo "environment=production"  >> "$GITHUB_OUTPUT" ;;
+            staging) echo "environment=staging"     >> "$GITHUB_OUTPUT" ;;
+            dev)     echo "environment=development" >> "$GITHUB_OUTPUT" ;;
+            *)       echo "::error::Unmapped branch '$BRANCH'"; exit 1  ;;
+          esac
+
+  deploy:
+    name: Deploy
+    needs: resolve
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.resolve.outputs.environment }}
+      # Optional: surface the live URL on the deployment. Wire up later.
+      # url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - run: pip install -e ".[dev]"
+
+      # --- Placeholder deploy step --------------------------------------
+      # Replace with the real deployment for ${{ needs.resolve.outputs.environment }}.
+      # Environment-specific secrets/vars are injected automatically by the
+      # GitHub Environment selected above (e.g. secrets.DEPLOY_TOKEN).
+      - id: deploy
+        env:
+          TARGET_ENV: ${{ needs.resolve.outputs.environment }}
+        run: |
+          echo "Deploying commit ${GITHUB_SHA} to ${TARGET_ENV}"
+          echo "TODO: replace with real deploy (docker push / cloud deploy / PaaS CLI)"

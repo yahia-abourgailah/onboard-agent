@@ -1,0 +1,4 @@
+# Default owners, requested for review on every PR.
+# Required-reviewer enforcement is configured per branch in branch protection
+# (see docs/github-setup.md), not here.
+* @yahia-abourgailah
