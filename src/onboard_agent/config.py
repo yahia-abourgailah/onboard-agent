@@ -33,6 +33,10 @@ class Settings(BaseSettings):
     debug: bool = Field(default=False)
     OPENAI_API_KEY: str = Field(default="")
     OPENAI_BASE_URL: str = Field(default="")
+    API_TOKEN: str = Field(
+        default="",
+        description="Secret token clients must send in the Authorization header.",
+    )
 
     @property
     def is_production(self) -> bool:

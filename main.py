@@ -1,13 +1,18 @@
 from onboard_agent import config
-from onboard_agent.database.postgres import init_db
-from onboard_agent.graph.build_graph import invoke_graph
+from fastapi import FastAPI
+from onboard_agent.api.endpoints import router
+from onboard_agent.api.middleware import setup_middleware
+
+import uvicorn
+
+app = FastAPI(title="onboard-agent")
+app.include_router(router)
+setup_middleware(app)
 
 if __name__ == "__main__":
-    if not config.ANTHROPIC_API_KEY:
-        print("Set ANTHROPIC_API_KEY before running.")
-    else:
-        init_db()
-
-        question = "What's John Smith's email and who is his manager?"
-        result = invoke_graph(question)
-        print(result["messages"][-1].content)
+    uvicorn.run(
+        "main:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=True,
+    )
