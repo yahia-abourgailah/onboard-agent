@@ -19,3 +19,8 @@ def build_graph():
     graph_builder.add_edge("tools", "llm")
 
     return graph_builder.compile()
+
+
+def invoke_graph(question: str):
+    graph = build_graph()
+    return graph.invoke({"messages": [{"role": "user", "content": question}]})

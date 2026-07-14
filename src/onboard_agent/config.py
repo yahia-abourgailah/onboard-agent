@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     """Application settings, validated at process startup."""
 
     model_config = SettingsConfigDict(
-        env_prefix="ONBOARD_",
+        # env_prefix="ONBOARD_",
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
@@ -31,6 +31,8 @@ class Settings(BaseSettings):
 
     environment: Environment = Field(default=Environment.DEVELOPMENT)
     debug: bool = Field(default=False)
+    OPENAI_API_KEY: str = Field(default="")
+    OPENAI_BASE_URL: str = Field(default="")
 
     @property
     def is_production(self) -> bool:
