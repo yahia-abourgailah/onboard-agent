@@ -1,10 +1,11 @@
-from onboard_agent import config
+from onboard_agent.config import Settings
 from onboard_agent.database.postgres import init_db
 from onboard_agent.graph.build_graph import invoke_graph
 
 if __name__ == "__main__":
-    if not config.ANTHROPIC_API_KEY:
-        print("Set ANTHROPIC_API_KEY before running.")
+    settings = Settings()
+    if not settings.OPENAI_API_KEY:
+        print("Set OPENAI_API_KEY before running.")
     else:
         init_db()
 
