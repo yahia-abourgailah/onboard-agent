@@ -1,5 +1,7 @@
 from langchain_openai import ChatOpenAI
+
 from onboard_agent.config import Settings
+
 settings = Settings()
 
 

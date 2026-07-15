@@ -6,14 +6,13 @@ the platform's secret/variable store; nothing is hardcoded here.
 """
 
 from enum import StrEnum
-
 from typing import Annotated
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
-#from pydantic import Field, field_validator
-#from pydantic_settings import BaseSettings, SettingsConfigDict
+# from pydantic import Field, field_validator
+# from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Environment(StrEnum):
@@ -43,7 +42,7 @@ class Settings(BaseSettings):
         default="",
         description="Secret token clients must send in the Authorization header.",
     )
-    
+
     ALLOWED_ORIGINS: Annotated[list[str], NoDecode] = Field(
         default_factory=list,
         description="Comma-separated list of origins allowed to make credentialed "

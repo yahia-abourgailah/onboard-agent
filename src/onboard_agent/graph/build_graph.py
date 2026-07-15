@@ -1,11 +1,9 @@
-from langgraph.graph import StateGraph, START
-from langgraph.prebuilt import ToolNode
+from langgraph.graph import START, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
 
 from onboard_agent.graph.nodes import call_llm
 from onboard_agent.graph.state import AgentState
 from onboard_agent.tools import tools
-from langgraph.prebuilt import tools_condition
-
 
 
 def build_graph():

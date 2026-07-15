@@ -21,7 +21,15 @@ SAMPLE_ROWS = [
     (1, "Jane Doe", "jane.doe@company.com", "Engineering Manager", "Engineering", 3, None),
     (2, "John Smith", "john.smith@company.com", "Product Designer", "Design", 2, "Priya Nair"),
     (3, "Priya Nair", "priya.nair@company.com", "Design Lead", "Design", 2, None),
-    (4, "Carlos Mendes", "carlos.mendes@company.com", "Backend Engineer", "Engineering", 3, "Jane Doe"),
+    (
+        4,
+        "Carlos Mendes",
+        "carlos.mendes@company.com",
+        "Backend Engineer",
+        "Engineering",
+        3,
+        "Jane Doe",
+    ),
     (5, "Amy Chen", "amy.chen@company.com", "Marketing Manager", "Marketing", 2, None),
 ]
 

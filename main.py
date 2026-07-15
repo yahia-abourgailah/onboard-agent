@@ -1,9 +1,8 @@
-from onboard_agent import config
+import uvicorn
 from fastapi import FastAPI
+
 from onboard_agent.api.endpoints import router
 from onboard_agent.api.middleware import setup_middleware
-
-import uvicorn
 
 app = FastAPI(title="onboard-agent")
 app.include_router(router)

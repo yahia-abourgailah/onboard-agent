@@ -1,6 +1,6 @@
 import secrets
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Annotated, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from onboard_agent.config import Environment, get_settings
@@ -9,7 +9,7 @@ _bearer_scheme = HTTPBearer(auto_error=False)
 
 
 async def verify_token(
-    credentials: HTTPAuthorizationCredentials | None = Depends(_bearer_scheme),
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(_bearer_scheme)] = None,
 ) -> str:
     """Require `Authorization: Bearer <token>` on protected routes."""
     settings = get_settings()

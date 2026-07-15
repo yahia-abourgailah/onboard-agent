@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from fastapi import Depends, APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from langchain_core.messages import HumanMessage
 from pydantic import BaseModel
-from onboard_agent.model.llm import llm
-from langchain.messages import HumanMessage
 
 from onboard_agent.api.security import verify_token
+from onboard_agent.model.llm import llm
 
 router = APIRouter()
 

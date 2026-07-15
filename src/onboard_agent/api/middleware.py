@@ -13,16 +13,14 @@ logging.basicConfig(level=logging.INFO)
 def setup_middleware(app: FastAPI) -> None:
     settings = get_settings()
 
-
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.ALLOWED_ORIGINS,   
+        allow_origins=settings.ALLOWED_ORIGINS,
         allow_credentials=True,
-        #allow_credentials=bool(settings.ALLOWED_ORIGINS),
+        # allow_credentials=bool(settings.ALLOWED_ORIGINS),
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
 
     @app.middleware("http")
     async def log_requests(request: Request, call_next):
@@ -30,7 +28,6 @@ def setup_middleware(app: FastAPI) -> None:
         response = await call_next(request)
         duration_ms = (time.time() - start) * 1000
         logger.info(
-            f"{request.method} {request.url.path} "
-            f"-> {response.status_code} ({duration_ms:.1f}ms)"
+            f"{request.method} {request.url.path} -> {response.status_code} ({duration_ms:.1f}ms)"
         )
         return response
