@@ -33,6 +33,10 @@ class Settings(BaseSettings):
     debug: bool = Field(default=False)
     OPENAI_API_KEY: str = Field(default="")
     OPENAI_BASE_URL: str = Field(default="")
+    LANGSMITH_TRACING: bool = Field(default=False)
+    LANGSMITH_API_KEY: str = Field(default="")
+    LANGSMITH_PROJECT: str = Field(default="")
+    LANGSMITH_ENDPOINT: str = Field(default="")
 
     @property
     def is_production(self) -> bool:

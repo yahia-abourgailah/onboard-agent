@@ -1,47 +1,64 @@
-"""
-Creates and seeds the Chroma vector store with onboarding knowledge-base
-documents (company history, values, floor descriptions, etc.).
+from pathlib import Path
 
-Import get_vector_store() from here wherever the store is needed
-(currently just tools/vector_tool.py, via retriever.py).
-"""
-
-from langchain_chroma import Chroma
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
+from langchain_qdrant import QdrantVectorStore
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-ONBOARDING_DOCS = [
-    Document(
-        page_content="The company was founded in 2015 by two engineers who wanted "
-        "to make internal tools less painful. We grew from 2 to 300 people by 2024.",
-        metadata={"topic": "history"},
-    ),
-    Document(
-        page_content="Our core values are curiosity, ownership, and respect. "
-        "We favor written communication and default to transparency.",
-        metadata={"topic": "values"},
-    ),
-    Document(
-        page_content="Floor 1 has reception, the cafeteria, and guest meeting rooms.",
-        metadata={"topic": "floor_1"},
-    ),
-    Document(
-        page_content="Floor 2 houses the Design and Marketing teams, plus a quiet "
-        "focus room and a small library.",
-        metadata={"topic": "floor_2"},
-    ),
-    Document(
-        page_content="Floor 3 houses the Engineering and Product teams, along with "
-        "the server room and the main all-hands space.",
-        metadata={"topic": "floor_3"},
-    ),
-]
+DATA_DIR = Path(__file__).resolve().parents[3]/ "data"  # adjust to your actual folder
+CHUNK_SIZE = 1000
+CHUNK_OVERLAP = 150
 
 
-def build_vector_store(collection_name: str = "onboarding_kb") -> Chroma:
+def load_onboarding_docs(data_dir: Path = DATA_DIR) -> list[Document]:
+    """Load every PDF in the data directory into raw page-level Documents."""
+    pdf_paths = sorted(data_dir.glob("*.pdf"))
+
+    if not pdf_paths:
+        raise FileNotFoundError(f"No PDF files found in {data_dir}")
+
+    documents: list[Document] = []
+    for pdf_path in pdf_paths:
+        loader = PyPDFLoader(str(pdf_path))
+        pages = loader.load()  # one Document per page
+
+        for page in pages:
+            page.metadata["topic"] = pdf_path.stem
+            page.metadata["source"] = pdf_path.name
+
+        documents.extend(pages)
+
+    return documents
+
+
+def chunk_documents(
+    documents: list[Document],
+    chunk_size: int = CHUNK_SIZE,
+    chunk_overlap: int = CHUNK_OVERLAP,
+) -> list[Document]:
+    """Split page-level Documents into smaller overlapping chunks."""
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        separators=["\n\n", "\n", ". ", " ", ""],
+    )
+    return splitter.split_documents(documents)
+
+
+def build_vector_store(
+    collection_name: str = "onboarding_kb",
+    data_dir: Path = DATA_DIR,
+    qdrant_url: str = "http://localhost:6333",
+) -> QdrantVectorStore:
+    documents = load_onboarding_docs(data_dir)
+    chunks = chunk_documents(documents)
+
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-    return Chroma.from_documents(
-        documents=ONBOARDING_DOCS,
+
+    return QdrantVectorStore.from_documents(
+        documents=chunks,
         embedding=embeddings,
+        url=qdrant_url,
         collection_name=collection_name,
     )

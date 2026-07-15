@@ -5,8 +5,8 @@ from onboard_agent.graph.nodes import call_llm
 from onboard_agent.graph.state import AgentState
 from onboard_agent.tools import tools
 from langgraph.prebuilt import tools_condition
-
-
+from dotenv import load_dotenv
+load_dotenv()
 
 def build_graph():
     graph_builder = StateGraph(AgentState)
