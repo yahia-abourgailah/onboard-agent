@@ -4,15 +4,21 @@ import time
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from onboard_agent.config import get_settings
+
 logger = logging.getLogger("onboard_agent")
 logging.basicConfig(level=logging.INFO)
 
 
 def setup_middleware(app: FastAPI) -> None:
+    settings = get_settings()
+
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.ALLOWED_ORIGINS,   
         allow_credentials=True,
+        #allow_credentials=bool(settings.ALLOWED_ORIGINS),
         allow_methods=["*"],
         allow_headers=["*"],
     )
