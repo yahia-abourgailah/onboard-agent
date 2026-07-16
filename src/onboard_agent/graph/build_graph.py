@@ -1,14 +1,17 @@
-from langgraph.graph import StateGraph, START
-from langgraph.prebuilt import ToolNode
+from typing import Any
+
+from langchain_core.runnables import Runnable
+from langgraph.graph import START, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
 
 from onboard_agent.graph.nodes import call_llm
 from onboard_agent.graph.state import AgentState
 from onboard_agent.tools import tools
-from langgraph.prebuilt import tools_condition
 
 
-
-def build_graph():
+# Typed as the Runnable interface the compiled graph exposes (invoke). This stays
+# stable across langgraph versions, unlike CompiledStateGraph's generic arity.
+def build_graph() -> Runnable[Any, Any]:
     graph_builder = StateGraph(AgentState)
 
     graph_builder.add_node("llm", call_llm)
@@ -21,6 +24,7 @@ def build_graph():
     return graph_builder.compile()
 
 
-def invoke_graph(question: str):
+def invoke_graph(question: str) -> dict[str, Any]:
     graph = build_graph()
-    return graph.invoke({"messages": [{"role": "user", "content": question}]})
+    result: dict[str, Any] = graph.invoke({"messages": [{"role": "user", "content": question}]})
+    return result

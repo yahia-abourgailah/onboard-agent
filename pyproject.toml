@@ -7,6 +7,14 @@ requires-python = ">=3.11"
 dependencies = [
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
+    # FIX: the merged agent + API code imported these but they were never declared,
+    # so a clean install could not run the app. Pinned to the current major lines.
+    "fastapi>=0.111",
+    "uvicorn>=0.30",
+    "langgraph>=0.2",
+    "langchain-core>=0.3",
+    "langchain-openai>=0.2",
+    "langchain-chroma>=0.1",
 ]
 
 [project.optional-dependencies]
@@ -31,10 +39,29 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's dependency-injection calls are meant to live in argument defaults;
+# they are not the mutable-default-argument bug that B008 targets.
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.Query",
+    "fastapi.Path",
+    "fastapi.Header",
+    "fastapi.Security",
+]
+
 [tool.mypy]
 python_version = "3.11"
 strict = true
 files = ["src", "tests"]
+
+# numpy (pulled in transitively by chromadb) ships PEP 695 `type` stubs that only
+# parse under 3.12+; we target 3.11, so skip following it. We don't type against
+# numpy directly, so this loses nothing.
+[[tool.mypy.overrides]]
+module = ["numpy", "numpy.*"]
+follow_imports = "skip"
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

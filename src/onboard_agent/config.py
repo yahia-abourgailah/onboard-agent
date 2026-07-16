@@ -23,7 +23,9 @@ class Settings(BaseSettings):
     """Application settings, validated at process startup."""
 
     model_config = SettingsConfigDict(
-        # env_prefix="ONBOARD_",
+        # env_prefix is intentionally left off: OPENAI_API_KEY is a well-known name
+        # the OpenAI/LangChain client also reads, so we keep it un-prefixed rather
+        # than forcing ONBOARD_OPENAI_API_KEY. Env var names below map 1:1.
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
@@ -33,6 +35,13 @@ class Settings(BaseSettings):
     debug: bool = Field(default=False)
     OPENAI_API_KEY: str = Field(default="")
     OPENAI_BASE_URL: str = Field(default="")
+    API_TOKEN: str = Field(
+        default="",
+        description="Secret token clients must send in the Authorization header.",
+    )
+    # FIX (FIX-5): explicit CORS allow-list, empty by default (no cross-origin).
+    # Set per environment, e.g. CORS_ALLOW_ORIGINS='["https://app.example.com"]'.
+    cors_allow_origins: list[str] = Field(default_factory=list)
 
     @property
     def is_production(self) -> bool:

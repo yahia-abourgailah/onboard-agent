@@ -9,7 +9,7 @@ file needs to change, since tools/sql_tool.py only calls run_query().
 
 import sqlite3
 
-from onboard_agent.database.schema import SCHEMA_SQL, SAMPLE_ROWS
+from onboard_agent.database.schema import SAMPLE_ROWS, SCHEMA_SQL
 
 DB_PATH = "onboarding.db"
 

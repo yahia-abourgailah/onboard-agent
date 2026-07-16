@@ -61,6 +61,9 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+# Local SQLite directory DB seeded by init_db() (see database/postgres.py)
+onboarding.db
+
 # Flask stuff:
 instance/
 .webassets-cache
@@ -216,3 +219,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+*.txt
