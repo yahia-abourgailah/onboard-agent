@@ -2,8 +2,6 @@ from typing import Any
 
 from dotenv import load_dotenv
 from langchain_core.runnables import Runnable, RunnableConfig
-from dotenv import load_dotenv
-from langchain_core.runnables import Runnable
 from langgraph.graph import START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
