@@ -52,7 +52,6 @@ class Settings(BaseSettings):
     LANGSMITH_PROJECT: str = Field(default="")
     LANGSMITH_ENDPOINT: str = Field(default="")
 
-
     @property
     def is_production(self) -> bool:
         return self.environment is Environment.PRODUCTION

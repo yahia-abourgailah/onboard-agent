@@ -8,8 +8,9 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from graph.nodes import call_llm
 from graph.state import AgentState
 from tools import tools
-from dotenv import load_dotenv
+
 load_dotenv()  # Loads variables from .env
+
 
 # Typed as the Runnable interface the compiled graph exposes (invoke). This stays
 # stable across langgraph versions, unlike CompiledStateGraph's generic arity.
