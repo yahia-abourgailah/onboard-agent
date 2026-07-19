@@ -1,8 +1,5 @@
-"""HTTP routes for the onboarding agent.
-
-Resolves the merge between the agent endpoint (ran the graph, no auth) and the
-auth endpoint (had auth, but only a stub response) into a single router: a public
-health check plus a token-protected /chat that actually runs the agent.
+"""HTTP routes for the onboarding agent: a public health check plus a
+token-protected /chat that runs the agent graph.
 """
 
 from __future__ import annotations
@@ -32,12 +29,6 @@ def health() -> dict[str, str]:
 
 @router.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest, _token: str = Depends(verify_token)) -> ChatResponse:
-    # FIX (FIX-4): protect /chat with verify_token — the agent endpoint had no auth,
-    # the auth endpoint had no agent. This keeps both.
-    # FIX (FIX-3): route the question through the LangGraph agent instead of calling
-    # the raw model, so the SQL and vector tools are actually used. (This also drops
-    # the old `from langchain.messages import HumanMessage` — FIX-2, a wrong module
-    # path — since the graph builds its own messages.)
     try:
         result = invoke_graph(request.prompt)
     except Exception as exc:

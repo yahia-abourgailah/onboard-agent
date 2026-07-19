@@ -1,8 +1,5 @@
-"""Application entrypoint.
-
-Resolves the merge between the two `main.py` versions — one that ran the graph
-from a `__main__` script, one that served the FastAPI app — into a single ASGI
-app. The employee directory DB is initialized once on startup via lifespan.
+"""Application entrypoint: the FastAPI ASGI app. The database is created and
+seeded once on startup via the lifespan handler.
 """
 
 from __future__ import annotations
@@ -20,9 +17,6 @@ from onboard_agent.database.postgres import init_db
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
-    # FIX (FIX-4): seed/create the directory DB once at startup instead of inside a
-    # __main__ block that only ran when the file was executed directly. Uses the
-    # modern lifespan handler rather than the deprecated @app.on_event("startup").
     init_db()
     yield
 

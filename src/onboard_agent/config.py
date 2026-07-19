@@ -43,8 +43,8 @@ class Settings(BaseSettings):
         default="",
         description="Secret token clients must send in the Authorization header.",
     )
-    # FIX (FIX-5): explicit CORS allow-list, empty by default (no cross-origin).
-    # Set per environment, e.g. CORS_ALLOW_ORIGINS='["https://app.example.com"]'.
+    # Explicit CORS allow-list, empty by default (no cross-origin). Set per
+    # environment, e.g. CORS_ALLOW_ORIGINS='["https://app.example.com"]'.
     cors_allow_origins: list[str] = Field(default_factory=list)
     # LangSmith tracing (from the DB/agent PR); all optional and off by default.
     LANGSMITH_TRACING: bool = Field(default=False)

@@ -1,9 +1,8 @@
 """LLM factory.
 
-Both the base model and the tool-bound model are built lazily. Constructing a
-ChatOpenAI validates credentials immediately, so building at import time crashed
-every import on a machine without a key (tests, the graph, app startup). The
-lru_cache keeps each a single shared instance, created on first use.
+The base model and the tool-bound model are built lazily (lru_cache) so importing
+this module never requires credentials — ChatOpenAI validates the key on
+construction. Each is a single shared instance, created on first use.
 """
 
 from functools import lru_cache
@@ -33,7 +32,5 @@ def get_llm() -> ChatOpenAI:
 
 @lru_cache(maxsize=1)
 def get_llm_with_tools() -> Runnable[LanguageModelInput, BaseMessage]:
-    # FIX (FIX-1): the agent node referenced `llm_with_tools`, which was never
-    # defined — so importing the graph raised ImportError and dev did not run.
-    # Bind the tools here so the model can emit tool calls.
+    """Tool-bound model so the agent node can emit tool calls."""
     return get_llm().bind_tools(tools)

@@ -31,9 +31,7 @@ async def verify_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # FIX (FIX-6): compare with secrets.compare_digest, not `!=`. A plain string
-    # comparison short-circuits on the first differing byte, leaking token length
-    # and content through timing. compare_digest runs in constant time.
+    # Constant-time comparison to avoid leaking the token through timing.
     if not secrets.compare_digest(credentials.credentials, settings.API_TOKEN):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

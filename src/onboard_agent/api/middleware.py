@@ -16,9 +16,7 @@ def setup_middleware(app: FastAPI) -> None:
 
     app.add_middleware(
         CORSMiddleware,
-        # FIX (FIX-5): never pair allow_origins=["*"] with allow_credentials=True —
-        # browsers reject that combination, and a credentialed wildcard is a
-        # security hole. Origins now come from config, per environment.
+        # Origins come from config, per environment — never a credentialed wildcard.
         allow_origins=settings.cors_allow_origins,
         allow_credentials=True,
         allow_methods=["*"],
@@ -30,10 +28,7 @@ def setup_middleware(app: FastAPI) -> None:
         request: Request,
         call_next: Callable[[Request], Awaitable[Response]],
     ) -> Response:
-        # FIX (best practice): time with perf_counter (monotonic) instead of
-        # time.time(), which can jump backwards on a clock adjustment and produce
-        # negative durations. Also log with %-args so the string is only built when
-        # the INFO level is actually emitted.
+        # Monotonic clock so a wall-clock adjustment can't yield negative durations.
         start = time.perf_counter()
         response = await call_next(request)
         duration_ms = (time.perf_counter() - start) * 1000
