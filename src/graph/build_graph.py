@@ -2,6 +2,8 @@ from typing import Any
 
 from dotenv import load_dotenv
 from langchain_core.runnables import Runnable, RunnableConfig
+from dotenv import load_dotenv
+from langchain_core.runnables import Runnable
 from langgraph.graph import START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
@@ -10,7 +12,7 @@ from graph.state import AgentState
 from memory.checkpointer import checkpointer
 from tools import tools
 
-load_dotenv()  # for LANGSMITH_* env vars
+load_dotenv()  # Loads variables from .env
 
 
 # Typed as the Runnable interface the compiled graph exposes (invoke). This stays
