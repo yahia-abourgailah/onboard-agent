@@ -2,13 +2,13 @@ from pathlib import Path
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.documents import Document
-from langchain_openai import OpenAIEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from config import Settings
 
-DATA_DIR = Path(__file__).resolve().parents[3] / "data"
+DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 150
 
@@ -59,7 +59,9 @@ def build_vector_store(
     documents = load_onboarding_docs(data_dir)
     chunks = chunk_documents(documents)
 
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    )
 
     return QdrantVectorStore.from_documents(
         documents=chunks,
