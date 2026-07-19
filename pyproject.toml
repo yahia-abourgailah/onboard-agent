@@ -14,6 +14,7 @@ dependencies = [
     "langgraph>=0.2",
     "langchain-core>=0.3",
     "langchain-openai>=0.2",
+    "langchain-huggingface>=0.0.1",
     # Vector store (from the DB/agent PR): Qdrant, with PDF loading + chunking to
     # ingest the onboarding docs under data/.
     "langchain-qdrant>=0.1",
