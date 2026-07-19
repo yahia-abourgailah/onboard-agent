@@ -1,6 +1,6 @@
 from langchain_core.tools import tool
 
-from onboard_agent.database.postgres import run_query
+from database.postgres import run_query
 
 
 @tool

@@ -13,8 +13,8 @@ from langchain_core.runnables import Runnable
 from langchain_openai import ChatOpenAI
 from pydantic import SecretStr
 
-from onboard_agent.config import Settings
-from onboard_agent.tools import tools
+from config import Settings
+from tools import tools
 
 
 @lru_cache(maxsize=1)

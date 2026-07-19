@@ -5,7 +5,7 @@ from collections.abc import Awaitable, Callable
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
-from onboard_agent.config import get_settings
+from config import get_settings
 
 logger = logging.getLogger("onboard_agent")
 logging.basicConfig(level=logging.INFO)

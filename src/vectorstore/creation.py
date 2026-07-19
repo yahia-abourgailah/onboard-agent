@@ -6,7 +6,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from onboard_agent.config import Settings
+from config import Settings
 
 DATA_DIR = Path(__file__).resolve().parents[3] / "data"
 CHUNK_SIZE = 1000
