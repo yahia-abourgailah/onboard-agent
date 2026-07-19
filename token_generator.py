@@ -9,6 +9,7 @@ def generate_api_key(prefix: str = "sk", length: int = 32) -> str:
     token = "".join(secrets.choice(alphabet) for _ in range(length))
     return f"{prefix}_{token}"
 
+
 def main():
     parser = argparse.ArgumentParser(description="Generate secure API keys.")
     parser.add_argument("-c", "--count", type=int, default=1, help="Number of keys to generate")
@@ -25,6 +26,7 @@ def main():
         print(f"Wrote {len(keys)} keys to {args.output}")
     else:
         print("\n".join(keys))
+
 
 if __name__ == "__main__":
     main()

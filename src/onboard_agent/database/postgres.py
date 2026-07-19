@@ -21,9 +21,7 @@ def init_db(path: str = DB_PATH) -> None:
     cur.execute(SCHEMA_SQL)
     cur.execute("SELECT COUNT(*) FROM employees")
     if cur.fetchone()[0] == 0:
-        cur.executemany(
-            "INSERT INTO employees VALUES (?, ?, ?, ?, ?, ?, ?)", SAMPLE_ROWS
-        )
+        cur.executemany("INSERT INTO employees VALUES (?, ?, ?, ?, ?, ?, ?)", SAMPLE_ROWS)
         conn.commit()
     conn.close()
 
