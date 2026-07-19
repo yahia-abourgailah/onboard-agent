@@ -35,6 +35,10 @@ class Settings(BaseSettings):
     debug: bool = Field(default=False)
     OPENAI_API_KEY: str = Field(default="")
     OPENAI_BASE_URL: str = Field(default="")
+    QDRANT_URL: str = Field(
+        default="http://localhost:6333",
+        description="URL of the Qdrant vector store used for the knowledge base.",
+    )
     API_TOKEN: str = Field(
         default="",
         description="Secret token clients must send in the Authorization header.",
@@ -42,6 +46,11 @@ class Settings(BaseSettings):
     # FIX (FIX-5): explicit CORS allow-list, empty by default (no cross-origin).
     # Set per environment, e.g. CORS_ALLOW_ORIGINS='["https://app.example.com"]'.
     cors_allow_origins: list[str] = Field(default_factory=list)
+    # LangSmith tracing (from the DB/agent PR); all optional and off by default.
+    LANGSMITH_TRACING: bool = Field(default=False)
+    LANGSMITH_API_KEY: str = Field(default="")
+    LANGSMITH_PROJECT: str = Field(default="")
+    LANGSMITH_ENDPOINT: str = Field(default="")
 
     @property
     def is_production(self) -> bool:

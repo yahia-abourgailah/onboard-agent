@@ -14,7 +14,18 @@ dependencies = [
     "langgraph>=0.2",
     "langchain-core>=0.3",
     "langchain-openai>=0.2",
-    "langchain-chroma>=0.1",
+    # Vector store (from the DB/agent PR): Qdrant, with PDF loading + chunking to
+    # ingest the onboarding docs under data/.
+    "langchain-qdrant>=0.1",
+    "langchain-community>=0.3",
+    "langchain-text-splitters>=0.3",
+    "pypdf>=4.0",
+    # DB layer + migrations (from the database PR): SQLModel ORM and Alembic.
+    "sqlmodel>=0.0.16",
+    "alembic>=1.13",
+    # numpy (transitive via the vector-store/LLM stack) ships PEP 695 `type` stubs
+    # from 2.3 on that mypy cannot parse under our 3.11 target; cap below that.
+    "numpy<2.3",
 ]
 
 [project.optional-dependencies]
@@ -39,6 +50,14 @@ src = ["src", "tests"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
+[tool.ruff.lint.per-file-ignores]
+# These modules hold long-form reference data and tool/prompt schema text
+# (floor/department descriptions, SQL-tool docstring) that reads best on one
+# line; wrapping it hurts legibility more than the line-length rule helps.
+"src/onboard_agent/database/schema.py" = ["E501"]
+"src/onboard_agent/tools/sql_tool.py" = ["E501"]
+"src/onboard_agent/prompts/llm_prompt.py" = ["E501"]
+
 [tool.ruff.lint.flake8-bugbear]
 # FastAPI's dependency-injection calls are meant to live in argument defaults;
 # they are not the mutable-default-argument bug that B008 targets.
@@ -55,7 +74,8 @@ python_version = "3.11"
 strict = true
 files = ["src", "tests"]
 
-# numpy (pulled in transitively by chromadb) ships PEP 695 `type` stubs that only
+# numpy (pulled in transitively by the vector-store stack) ships PEP 695 `type`
+# stubs that only
 # parse under 3.12+; we target 3.11, so skip following it. We don't type against
 # numpy directly, so this loses nothing.
 [[tool.mypy.overrides]]

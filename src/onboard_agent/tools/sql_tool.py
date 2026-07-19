@@ -6,18 +6,20 @@ from onboard_agent.database.postgres import run_query
 @tool
 def query_sql_db(sql_query: str) -> str:
     """
-    Run a read-only SQL query against the employee directory database and
+    Run a read-only SQL query against the interns' mentors and departments/facilities per floor databases and
     return the results. Write the SQL yourself based on the schema below.
 
-    Table: employees
+    Table: mentors_for_interns
     Columns:
         id            INTEGER, primary key
-        full_name     TEXT
-        email         TEXT
-        job_title     TEXT
-        team          TEXT
-        floor         INTEGER
-        manager_name  TEXT (nullable, name of the employee's manager)
+        name          TEXT
+        position      TEXT
+        department    TEXT
+
+    Table: departments_per_floor
+    Columns:
+        id                            INTEGER, primary key
+        floor                         TEXT ("B2", "B1", "Ground", "First", "Second", "Third", "Fourth", "Fifth", "Sixth" onlyy)
 
     Only SELECT statements are allowed. Always use SQLite syntax.
 

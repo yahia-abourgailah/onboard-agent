@@ -5,18 +5,18 @@ from having to know how the store was built or configured.
 
 from functools import lru_cache
 
-from langchain_chroma import Chroma
+from langchain_qdrant import QdrantVectorStore
 
 from onboard_agent.vectorstore.creation import build_vector_store
 
 
 # FIX (best practice): build the store lazily on first search instead of at import
-# time. The old module-level `_vector_store = build_vector_store()` ran embedding
-# calls (network + API key) the instant anything imported this module — which broke
-# `import`-only use, the test suite, and app startup on machines without a key.
-# lru_cache keeps it a single shared instance, same as before, but on demand.
+# time. The old module-level `_vector_store = build_vector_store()` ran PDF loading,
+# embedding calls (network + API key), and a Qdrant connection the instant anything
+# imported this module — which broke `import`-only use, the test suite, and app
+# startup. lru_cache keeps it a single shared instance, same as before, but on demand.
 @lru_cache(maxsize=1)
-def _get_vector_store() -> Chroma:
+def _get_vector_store() -> QdrantVectorStore:
     return build_vector_store()
 
 

@@ -1,32 +1,52 @@
 """
-Database connection and initialization.
+Database connection, initialization, and read-only query helper.
 
-Currently backed by a local SQLite file so the project runs with no
-external services. Swap the connection logic here for a real Postgres
-connection (e.g. psycopg2 / SQLAlchemy) later — nothing outside this
-file needs to change, since tools/sql_tool.py only calls run_query().
+Backed by a local SQLite file via SQLModel. Schema is owned by Alembic
+(see migrations/); init_db() below is a self-bootstrapping convenience for
+local/dev runs — it creates the tables and seeds reference data if the DB is
+empty, so the app works on a fresh checkout without a manual `alembic upgrade`.
+Both paths are idempotent: init_db() only seeds when a table is empty.
 """
 
 import sqlite3
+from collections.abc import Iterator
 
-from onboard_agent.database.schema import SAMPLE_ROWS, SCHEMA_SQL
+from sqlalchemy import Engine
+from sqlmodel import Session, SQLModel, create_engine, select
 
-DB_PATH = "onboarding.db"
+from onboard_agent.database.schema import (
+    DEPARTMENTS_PER_FLOOR,
+    MENTORS_FOR_INTERNS,
+    Departments_Per_Floor,
+    Mentors_For_Interns,
+)
 
-
-def init_db(path: str = DB_PATH) -> None:
-    """Create the employees table and seed it if empty."""
-    conn = sqlite3.connect(path)
-    cur = conn.cursor()
-    cur.execute(SCHEMA_SQL)
-    cur.execute("SELECT COUNT(*) FROM employees")
-    if cur.fetchone()[0] == 0:
-        cur.executemany("INSERT INTO employees VALUES (?, ?, ?, ?, ?, ?, ?)", SAMPLE_ROWS)
-        conn.commit()
-    conn.close()
+DB_FILE = "onboard_agent.sqlite"
+DATABASE_URL = f"sqlite:///{DB_FILE}"
+engine = create_engine(DATABASE_URL, echo=False)
 
 
-def run_query(sql_query: str, path: str = DB_PATH) -> str:
+def get_session() -> Iterator[Session]:
+    with Session(engine) as session:
+        yield session
+
+
+def get_engine() -> Engine:
+    return engine
+
+
+def init_db() -> None:
+    """Create tables and seed reference data if empty. Idempotent."""
+    SQLModel.metadata.create_all(engine)
+    with Session(engine) as session:
+        if session.exec(select(Departments_Per_Floor)).first() is None:
+            session.add_all(Departments_Per_Floor(**row) for row in DEPARTMENTS_PER_FLOOR)
+        if session.exec(select(Mentors_For_Interns)).first() is None:
+            session.add_all(Mentors_For_Interns(**row) for row in MENTORS_FOR_INTERNS)
+        session.commit()
+
+
+def run_query(sql_query: str, path: str = DB_FILE) -> str:
     """
     Execute a read-only SELECT query and return results as plain text.
     Raises no exceptions to the caller — errors are returned as strings
