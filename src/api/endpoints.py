@@ -15,6 +15,7 @@ router = APIRouter()
 
 class ChatRequest(BaseModel):
     prompt: str
+    thread_id: str  # one per conversation/session
 
 
 class ChatResponse(BaseModel):
@@ -30,7 +31,7 @@ def health() -> dict[str, str]:
 @router.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest, _token: str = Depends(verify_token)) -> ChatResponse:
     try:
-        result = invoke_graph(request.prompt)
+        result = invoke_graph(request.prompt, request.thread_id)
     except Exception as exc:
         # Return a clean 502; the underlying error is logged server-side by the
         # request middleware rather than leaked to the client.

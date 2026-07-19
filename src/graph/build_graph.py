@@ -1,12 +1,16 @@
 from typing import Any
 
-from langchain_core.runnables import Runnable
+from dotenv import load_dotenv
+from langchain_core.runnables import Runnable, RunnableConfig
 from langgraph.graph import START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
 from graph.nodes import call_llm
 from graph.state import AgentState
+from memory.checkpointer import checkpointer
 from tools import tools
+
+load_dotenv()  # for LANGSMITH_* env vars
 
 
 # Typed as the Runnable interface the compiled graph exposes (invoke). This stays
@@ -21,10 +25,20 @@ def build_graph() -> Runnable[Any, Any]:
     graph_builder.add_conditional_edges("llm", tools_condition)  # -> "tools" or END
     graph_builder.add_edge("tools", "llm")
 
-    return graph_builder.compile()
+    return graph_builder.compile(checkpointer=checkpointer)
 
 
-def invoke_graph(question: str) -> dict[str, Any]:
-    graph = build_graph()
-    result: dict[str, Any] = graph.invoke({"messages": [{"role": "user", "content": question}]})
+# Build ONCE at import time. If you rebuild the graph per-request, MemorySaver's
+# in-memory store effectively gets orphaned/discarded depending on how it's
+# referenced — always reuse one compiled graph.
+_graph = build_graph()
+
+
+def invoke_graph(question: str, thread_id: str) -> dict[str, Any]:
+    config = RunnableConfig(configurable={"thread_id": thread_id})
+    # Only pass the NEW message — the checkpointer restores everything before it.
+    result: dict[str, Any] = _graph.invoke(
+        {"messages": [{"role": "user", "content": question}]},
+        config=config,
+    )
     return result
