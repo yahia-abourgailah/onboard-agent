@@ -4,15 +4,11 @@ seeded once on startup via the lifespan handler.
 
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
-
 import uvicorn
 from fastapi import FastAPI
 
-from onboard_agent.api.endpoints import router
-from onboard_agent.api.middleware import setup_middleware
-
+from api.endpoints import router
+from api.middleware import setup_middleware
 
 app = FastAPI(title="onboard-agent")
 setup_middleware(app)

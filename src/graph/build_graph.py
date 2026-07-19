@@ -5,9 +5,9 @@ from langchain_core.runnables import Runnable
 from langgraph.graph import START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from onboard_agent.graph.nodes import call_llm
-from onboard_agent.graph.state import AgentState
-from onboard_agent.tools import tools
+from graph.nodes import call_llm
+from graph.state import AgentState
+from tools import tools
 from dotenv import load_dotenv
 load_dotenv()  # Loads variables from .env
 

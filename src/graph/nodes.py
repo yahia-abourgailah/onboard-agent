@@ -1,8 +1,8 @@
 from langchain_core.messages import BaseMessage, SystemMessage
 
-from onboard_agent.graph.state import AgentState
-from onboard_agent.model.llm import get_llm_with_tools
-from onboard_agent.prompts.llm_prompt import SYSTEM_PROMPT
+from graph.state import AgentState
+from model.llm import get_llm_with_tools
+from prompts.llm_prompt import SYSTEM_PROMPT
 
 
 def call_llm(state: AgentState) -> dict[str, list[BaseMessage]]:
