@@ -10,6 +10,7 @@ from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
+
 from database.schema import DEPARTMENTS_PER_FLOOR, MENTORS_FOR_INTERNS
 
 # revision identifiers, used by Alembic.

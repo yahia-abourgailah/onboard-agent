@@ -23,7 +23,7 @@ def load_onboarding_docs(data_dir: Path = DATA_DIR) -> list[Document]:
     documents: list[Document] = []
     for pdf_path in pdf_paths:
         loader = PyPDFLoader(str(pdf_path))
-        pages = loader.load()  # one Document per page
+        pages = loader.load()
 
         for page in pages:
             page.metadata["topic"] = pdf_path.stem

@@ -11,15 +11,7 @@ Both paths are idempotent: init_db() only seeds when a table is empty.
 import sqlite3
 from collections.abc import Iterator
 
-from sqlalchemy import Engine
-from sqlmodel import Session, SQLModel, create_engine, select
-
-from database.schema import (
-    DEPARTMENTS_PER_FLOOR,
-    MENTORS_FOR_INTERNS,
-    Departments_Per_Floor,
-    Mentors_For_Interns,
-)
+from sqlmodel import Session, create_engine
 
 DB_FILE = "onboard_agent.sqlite"
 DATABASE_URL = f"sqlite:///{DB_FILE}"
@@ -29,7 +21,6 @@ engine = create_engine(DATABASE_URL, echo=False)
 def get_session() -> Iterator[Session]:
     with Session(engine) as session:
         yield session
-
 
 
 def run_query(sql_query: str, path: str = DB_FILE) -> str:
