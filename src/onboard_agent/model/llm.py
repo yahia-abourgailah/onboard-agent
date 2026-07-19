@@ -27,6 +27,7 @@ def get_llm() -> ChatOpenAI:
         # keyless local vLLM (which ignores auth) still works.
         api_key=SecretStr(settings.OPENAI_API_KEY) if settings.OPENAI_API_KEY else None,
         base_url=settings.OPENAI_BASE_URL or None,
+        max_tokens=4096,
     )
 
 

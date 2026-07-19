@@ -31,20 +31,6 @@ def get_session() -> Iterator[Session]:
         yield session
 
 
-def get_engine() -> Engine:
-    return engine
-
-
-def init_db() -> None:
-    """Create tables and seed reference data if empty. Idempotent."""
-    SQLModel.metadata.create_all(engine)
-    with Session(engine) as session:
-        if session.exec(select(Departments_Per_Floor)).first() is None:
-            session.add_all(Departments_Per_Floor(**row) for row in DEPARTMENTS_PER_FLOOR)
-        if session.exec(select(Mentors_For_Interns)).first() is None:
-            session.add_all(Mentors_For_Interns(**row) for row in MENTORS_FOR_INTERNS)
-        session.commit()
-
 
 def run_query(sql_query: str, path: str = DB_FILE) -> str:
     """

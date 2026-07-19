@@ -17,8 +17,11 @@ def _get_vector_store() -> QdrantVectorStore:
     return build_vector_store()
 
 
-def search_knowledge_base(query: str, k: int = 3) -> str:
-    results = _get_vector_store().similarity_search(query, k=k)
+def search_knowledge_base(query: str, k: int = 5) -> str:
+    try:
+        results = _get_vector_store().similarity_search(query, k=k)
+    except Exception as exc:
+        return f"The vector knowledge base is unavailable right now: {exc}"
     if not results:
         return "No relevant information found in the knowledge base."
     return "\n\n".join(doc.page_content for doc in results)

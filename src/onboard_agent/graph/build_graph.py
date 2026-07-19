@@ -1,5 +1,6 @@
 from typing import Any
 
+from dotenv import load_dotenv
 from langchain_core.runnables import Runnable
 from langgraph.graph import START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
@@ -7,7 +8,8 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from onboard_agent.graph.nodes import call_llm
 from onboard_agent.graph.state import AgentState
 from onboard_agent.tools import tools
-
+from dotenv import load_dotenv
+load_dotenv()  # Loads variables from .env
 
 # Typed as the Runnable interface the compiled graph exposes (invoke). This stays
 # stable across langgraph versions, unlike CompiledStateGraph's generic arity.

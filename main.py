@@ -12,16 +12,9 @@ from fastapi import FastAPI
 
 from onboard_agent.api.endpoints import router
 from onboard_agent.api.middleware import setup_middleware
-from onboard_agent.database.postgres import init_db
 
 
-@asynccontextmanager
-async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
-    init_db()
-    yield
-
-
-app = FastAPI(title="onboard-agent", lifespan=lifespan)
+app = FastAPI(title="onboard-agent")
 setup_middleware(app)
 app.include_router(router)
 

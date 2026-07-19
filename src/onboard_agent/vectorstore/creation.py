@@ -5,6 +5,10 @@ from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from sentence_transformers import SentenceTransformer
+from langchain_huggingface import HuggingFaceEmbeddings
+
+
 
 from onboard_agent.config import Settings
 
@@ -59,7 +63,10 @@ def build_vector_store(
     documents = load_onboarding_docs(data_dir)
     chunks = chunk_documents(documents)
 
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+)
+
 
     return QdrantVectorStore.from_documents(
         documents=chunks,
