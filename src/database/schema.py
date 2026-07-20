@@ -96,12 +96,12 @@ DEPARTMENTS = [
     {
         "name": "Marketing",
         "description": "Responsible for developing and executing marketing strategies, managing the company's brand, running campaigns, creating content, conducting market research, and supporting business growth through customer engagement.",
-        "head": "Rania",
+        "head": "Rana Ashraf",
     },
     {
         "name": "Sales Operations",
         "description": "Supports the sales organization by optimizing sales processes, managing CRM systems, generating reports, analyzing sales performance, and improving operational efficiency.",
-        "head": "<HEAD_OF_SALES_OPERATIONS>",
+        "head": "Rania Salama",
     },
     {
         "name": "Sales",
@@ -125,17 +125,17 @@ DEPARTMENTS = [
     {
         "name": "Business Relations",
         "description": "Builds and maintains strategic partnerships with clients and stakeholders, manages key accounts, and identifies opportunities for collaboration and business expansion.",
-        "head": "<HEAD_OF_BUSINESS_RELATIONS>",
+        "head": "Mohamed Ibrahim",
     },
     {
         "name": "Business Development",
         "description": "Identifies new business opportunities, develops growth strategies, explores new markets, builds strategic partnerships, and supports long-term company expansion.",
-        "head": "<HEAD_OF_BUSINESS_DEVELOPMENT>",
+        "head": "Ehab Ali",
     },
     {
         "name": "Finance",
         "description": "Manages the company's financial planning, budgeting, accounting, payroll, reporting, accounts payable and receivable, compliance, and financial analysis.",
-        "head": "<HEAD_OF_FINANCE>",
+        "head": "Maii Adel",
     },
 ]
 

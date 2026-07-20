@@ -15,11 +15,18 @@ def query_sql_db(sql_query: str) -> str:
         name          TEXT
         position      TEXT
         department    TEXT
+    Table: departments
+    Columns:
+    id            INTEGER, primary key
+    name          TEXT
+    description   TEXT
+    head          TEXT
 
     Table: departments_per_floor
     Columns:
         id                            INTEGER, primary key
-        floor                         TEXT ("B2", "B1", "Ground", "First", "Second", "Third", "Fourth", "Fifth", "Sixth" onlyy)
+        floor                         TEXT ("B2", "B1", "Ground", "First", "Second", "Third", "Fourth", "Fifth", "Sixth" only)
+        departments_and_facilities    TEXT 
 
     Only SELECT statements are allowed. Always use SQLite syntax.
 
