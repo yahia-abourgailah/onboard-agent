@@ -13,6 +13,7 @@ class Mentors_For_Interns(SQLModel, table=True):
     position: str
     department: str
 
+
 class Departments(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     name: str
@@ -109,7 +110,7 @@ DEPARTMENTS = [
           | Third floor: Abo El Fadl, Shimmy
           | Fourth floor: Hossam Abdelrahman, Hady El Rady, Salma + Omar, Sameh + Ziad, Merna + Salah
           | Fifth floor: no current head
-          | Sixth floor: Manosur + Metawa, Nasser + Shaker"""
+          | Sixth floor: Manosur + Metawa, Nasser + Shaker""",
     },
     {
         "name": "Technology",
