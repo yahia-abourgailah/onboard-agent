@@ -56,3 +56,12 @@ def chat(
         session_id=session_id,
         thread_id=thread_id,
     )
+
+
+@router.post("/new-chat")
+def new_chat(response: Response, _token: str = Depends(verify_token)) -> dict[str, str]:
+    """Clears session cookies so the next /chat call starts a fresh
+    session_id and thread_id — i.e. a brand new conversation."""
+    response.delete_cookie("session_id")
+    response.delete_cookie("thread_id")
+    return {"status": "new chat ready"}
