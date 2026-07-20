@@ -5,18 +5,19 @@ Revises: 952747231624
 Create Date: 2026-07-20 15:56:08.367606
 
 """
-from typing import Sequence, Union
+
+from collections.abc import Sequence
 
 from alembic import op
 import sqlalchemy as sa
-import sqlmodel
+
 from database.schema import DEPARTMENTS
 
 # revision identifiers, used by Alembic.
-revision: str = '649707933e75'
-down_revision: Union[str, Sequence[str], None] = '952747231624'
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+revision: str = "649707933e75"
+down_revision: str | Sequence[str] | None = "952747231624"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 departments_table = sa.table(
     "departments",
@@ -25,10 +26,10 @@ departments_table = sa.table(
     sa.column("head", sa.String),
 )
 
+
 def upgrade() -> None:
     """Upgrade schema."""
     op.bulk_insert(departments_table, DEPARTMENTS)
-    pass
 
 
 def downgrade() -> None:
@@ -38,4 +39,3 @@ def downgrade() -> None:
             departments_table.c.name.in_([row["name"] for row in DEPARTMENTS])
         )
     )
-    pass

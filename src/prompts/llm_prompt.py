@@ -1,4 +1,8 @@
-from database.schema import DEPARTMENTS_PER_FLOOR_SCHEMA, MENTORS_FOR_INTERNS_SCHEMA, DEPARTMENTS_SCHEMA
+from database.schema import (
+    DEPARTMENTS_PER_FLOOR_SCHEMA,
+    DEPARTMENTS_SCHEMA,
+    MENTORS_FOR_INTERNS_SCHEMA,
+)
 
 SYSTEM_PROMPT = f"""You are Raseeny, an onboarding assistant for new interns and employees in The Address Investments.
 
