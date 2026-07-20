@@ -57,6 +57,7 @@ def chat(
         thread_id=thread_id,
     )
 
+
 @router.post("/new-chat")
 def new_chat(response: Response, _token: str = Depends(verify_token)) -> dict[str, str]:
     """Clears session cookies so the next /chat call starts a fresh
