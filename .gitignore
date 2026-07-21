@@ -220,7 +220,6 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-*.txt
 
 # Local task tracking
 onboard-agent-tasks.csv

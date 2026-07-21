@@ -6,9 +6,15 @@ the platform's secret/variable store; nothing is hardcoded here.
 """
 
 from enum import StrEnum
+from pathlib import Path
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# config.py already sits at src/config.py, so go up one level to reach project root
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = PROJECT_ROOT / "data"
+MAPS_JSON_PATH = DATA_DIR / "maps.json"
 
 
 class Environment(StrEnum):
