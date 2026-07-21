@@ -31,8 +31,23 @@ def query_sql_db(sql_query: str) -> str:
         departments_and_facilities:   TEXT
 
     Only SELECT statements are allowed. Always use SQLite syntax.
+    If the question cannot be answered from this schema, do not call this
+    tool at all — answer honestly instead.
 
     Args:
         sql_query: A complete, valid SQLite SELECT statement.
     """
-    return run_query(sql_query)
+    normalized = sql_query.strip().lower()
+
+    if not normalized.startswith("select"):
+        return "Error: only SELECT statements are allowed. No query was run."
+
+    try:
+        result = run_query(sql_query)
+    except Exception as e:
+        return f"Error: the query failed ({e}). Try rephrasing the question or check with HR."
+
+    if not result:
+        return "No matching records were found for that query."
+
+    return result
