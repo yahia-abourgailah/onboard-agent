@@ -137,6 +137,26 @@ DEPARTMENTS = [
         "description": "Manages the company's financial planning, budgeting, accounting, payroll, reporting, accounts payable and receivable, compliance, and financial analysis.",
         "head": "Maii Adel",
     },
+    {
+        "name": "Human Resources",
+        "description": "Responsible for attracting, hiring, developing, and retaining employees. Oversees talent acquisition, learning and development, employee engagement, performance management, organizational development, and company culture.",
+        "head": "Mai El Aktash",
+    },
+    {
+        "name": "HR Operations",
+        "description": "Responsible for the day-to-day administration of HR processes, including employee records, onboarding and offboarding, attendance, leave management, payroll coordination, HR systems, policy implementation, and ensuring compliance with labor regulations.",
+        "head": "Ramy Shams",
+    },
+    {
+        "name": "The Marq",
+        "description": "A separate company within the organization that specializes in developing real estate properties.",
+        "head": "Sylvia Doss",
+    },
+    {
+        "name": "Eclatic",
+        "description": "A separate company within the organization focused on providing cosmetics such as skincare and personal care products.",
+        "head": "Rehab Abo Zeid",
+    },
 ]
 
 
