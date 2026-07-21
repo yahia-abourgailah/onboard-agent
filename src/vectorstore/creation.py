@@ -5,6 +5,7 @@ from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_qdrant import QdrantVectorStore
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from qdrant_client import QdrantClient
 
 from config import Settings
 
@@ -56,12 +57,26 @@ def build_vector_store(
     # Config-via-env (see config.py): default to the configured Qdrant URL rather
     # than hardcoding localhost, so each environment points at its own instance.
     qdrant_url = qdrant_url or Settings().QDRANT_URL
-    documents = load_onboarding_docs(data_dir)
-    chunks = chunk_documents(documents)
+    # Connect to Qdrant and reuse an existing collection if present so we don't
+    # re-ingest on every process reload / file save.
+    client = QdrantClient(url=qdrant_url)
+    collection_exists = client.collection_exists(collection_name)
 
     embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     )
+
+    if collection_exists:
+        # Return a store connected to the existing collection without re-uploading
+        return QdrantVectorStore.from_existing_collection(
+            collection_name=collection_name,
+            embedding=embeddings,
+            url=qdrant_url,
+        )
+
+    # Collection doesn't exist yet: load docs, chunk and create it
+    documents = load_onboarding_docs(data_dir)
+    chunks = chunk_documents(documents)
 
     return QdrantVectorStore.from_documents(
         documents=chunks,
