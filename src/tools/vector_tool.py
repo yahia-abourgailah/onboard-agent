@@ -12,4 +12,18 @@ def query_vector_db(query: str) -> str:
     Args:
         query: The employee's natural language question.
     """
-    return search_knowledge_base(query)
+    if not query or not query.strip():
+        return "No question was provided to search for."
+
+    try:
+        results = search_knowledge_base(query)
+    except Exception as e:
+        return (
+            f"Error: the knowledge base search failed ({e}). "
+            "Try rephrasing the question or check with HR."
+        )
+
+    if not results:
+        return "No relevant information was found in the knowledge base for that question."
+
+    return results
