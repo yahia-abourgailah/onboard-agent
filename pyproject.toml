@@ -24,9 +24,6 @@ dependencies = [
     # DB layer + migrations (from the database PR): SQLModel ORM and Alembic.
     "sqlmodel>=0.0.16",
     "alembic>=1.13",
-    # numpy (transitive via the vector-store/LLM stack) ships PEP 695 `type` stubs
-    # from 2.3 on that mypy cannot parse under our 3.11 target; cap below that.
-    "numpy<2.3",
 ]
 
 [project.optional-dependencies]
@@ -74,15 +71,6 @@ extend-immutable-calls = [
 python_version = "3.12"
 strict = true
 files = ["src", "tests"]
-
-# numpy (pulled in transitively by the vector-store stack) ships PEP 695 `type`
-# stubs that only
-# parse under 3.12+; we target 3.11, so skip following it. We don't type against
-# numpy directly, so this loses nothing.
-[[tool.mypy.overrides]]
-module = ["numpy", "numpy.*"]
-follow_imports = "skip"
-ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -8,8 +8,8 @@ Create Date: 2026-07-20 15:56:08.367606
 
 from collections.abc import Sequence
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 from database.schema import DEPARTMENTS
 
