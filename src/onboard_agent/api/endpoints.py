@@ -7,8 +7,8 @@ from __future__ import annotations
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
-from api.security import verify_token
-from graph.build_graph import invoke_graph
+from onboard_agent.api.security import verify_token
+from onboard_agent.graph.build_graph import invoke_graph
 
 router = APIRouter()
 

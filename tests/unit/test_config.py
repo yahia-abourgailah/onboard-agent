@@ -2,7 +2,7 @@
 
 import pytest
 
-from config import Environment, Settings
+from onboard_agent.config import Environment, Settings
 
 
 def test_defaults_to_development() -> None:

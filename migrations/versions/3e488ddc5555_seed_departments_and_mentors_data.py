@@ -10,8 +10,7 @@ from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
-
-from database.schema import DEPARTMENTS_PER_FLOOR, MENTORS_FOR_INTERNS
+from src.onboard_agent.database.schema import DEPARTMENTS_PER_FLOOR, MENTORS_FOR_INTERNS
 
 # revision identifiers, used by Alembic.
 revision: str = "3e488ddc5555"

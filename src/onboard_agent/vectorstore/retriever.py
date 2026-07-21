@@ -7,7 +7,7 @@ from functools import lru_cache
 
 from langchain_qdrant import QdrantVectorStore
 
-from vectorstore.creation import build_vector_store
+from onboard_agent.vectorstore.creation import build_vector_store
 
 
 # Built lazily on first search (lru_cache) so importing this module never triggers

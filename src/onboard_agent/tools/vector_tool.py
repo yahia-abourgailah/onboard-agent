@@ -1,6 +1,6 @@
 from langchain_core.tools import tool
 
-from vectorstore.retriever import search_knowledge_base
+from onboard_agent.vectorstore.retriever import search_knowledge_base
 
 
 @tool

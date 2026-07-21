@@ -5,7 +5,7 @@ import secrets
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from config import Environment, get_settings
+from onboard_agent.config import Environment, get_settings
 
 _bearer_scheme = HTTPBearer(auto_error=False)
 

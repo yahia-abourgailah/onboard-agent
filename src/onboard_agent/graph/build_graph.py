@@ -4,9 +4,9 @@ from langchain_core.runnables import Runnable
 from langgraph.graph import START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from graph.nodes import call_llm
-from graph.state import AgentState
-from tools import tools
+from onboard_agent.graph.nodes import call_llm
+from onboard_agent.graph.state import AgentState
+from onboard_agent.tools import tools
 
 
 # Typed as the Runnable interface the compiled graph exposes (invoke). This stays

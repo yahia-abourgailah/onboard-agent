@@ -1,4 +1,4 @@
-from database.schema import DEPARTMENTS_PER_FLOOR_SCHEMA, MENTORS_FOR_INTERNS_SCHEMA
+from onboard_agent.database.schema import DEPARTMENTS_PER_FLOOR_SCHEMA, MENTORS_FOR_INTERNS_SCHEMA
 
 SYSTEM_PROMPT = f"""You are an onboarding assistant for new employees.
 Answer questions about company history, values, teams, floor layouts, leaves policy, code of conduct and other HR things.
