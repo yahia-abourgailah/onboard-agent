@@ -29,7 +29,6 @@ class ChatResponse(BaseModel):
 
 
 def _sse(payload: dict[str, object]) -> str:
-
     return f"data: {json.dumps(payload)}\n\n"
 
 
@@ -73,13 +72,11 @@ def chat_stream(
     http_request: Request,
     _token: str = Depends(verify_token),
 ) -> StreamingResponse:
-
     session_id = http_request.cookies.get("session_id") or str(uuid.uuid4())
 
     thread_id = http_request.cookies.get("thread_id") or str(uuid.uuid4())
 
     def events() -> Iterator[str]:
-
         try:
             for token in stream_graph_tokens(request.prompt, thread_id):
                 yield _sse({"type": "token", "content": token})
