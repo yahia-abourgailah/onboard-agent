@@ -6,7 +6,8 @@ from __future__ import annotations
 
 import json
 import uuid
-from typing import Sequence, cast
+from collections.abc import Sequence
+from typing import cast
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import Response as FastAPIResponse
@@ -34,7 +35,8 @@ class ChatResponse(BaseModel):
     response: str
     session_id: str
     thread_id: str
-    floor_map: dict[str, object] | None = None  # {"destination", "url", "route"} when directions were given
+    floor_map: dict[str, object] | None = None
+    # {"destination", "url", "route"} when directions were given
 
 
 def _extract_floor_map(messages: Sequence[BaseMessage]) -> dict[str, object] | None:
