@@ -53,6 +53,10 @@ class Settings(BaseSettings):
         default="",
         description="Secret token clients must send in the Authorization header.",
     )
+    RATE_LIMIT_ENABLED: bool = Field(default=True)
+    RATE_LIMIT_MAX_REQUESTS: int = Field(default=20)
+    RATE_LIMIT_WINDOW_SECONDS: int = Field(default=60)
+    METRICS_ENABLED: bool = Field(default=True)
     # Explicit CORS allow-list, empty by default (no cross-origin). Set per
     # environment, e.g. CORS_ALLOW_ORIGINS='["https://app.example.com"]'.
     cors_allow_origins: list[str] = Field(default_factory=list)
