@@ -7,7 +7,7 @@ from vectorstore.retriever import search_knowledge_base
 def query_vector_db(query: str) -> str:
     """
     Search the company knowledge base for unstructured information such as
-    company history, mission/values, history and organization structure, culture, policies,
+    mission/values, history and organizational structure such as CEO, culture, policies,
     hiring documents and floor descriptions.
 
     Args:

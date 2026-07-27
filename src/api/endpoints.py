@@ -5,6 +5,7 @@ token-protected /chat that runs the agent graph.
 from __future__ import annotations
 
 import json
+import logging
 import uuid
 from collections.abc import Iterator, Sequence
 from typing import cast
@@ -21,6 +22,7 @@ from config import FLOOR_SVG_PATH, MAPS_JSON_PATH
 from graph.build_graph import invoke_graph, stream_graph_tokens
 
 router = APIRouter()
+logger = logging.getLogger("onboard_agent")
 
 with open(FLOOR_SVG_PATH, encoding="utf-8") as f:
     _FLOOR_SVG = f.read()
@@ -107,6 +109,7 @@ def chat(
     try:
         result = invoke_graph(request.prompt, thread_id)
     except Exception as exc:
+        logger.exception("Chat request failed. thread_id=%s", thread_id)
         raise HTTPException(status_code=502, detail="Chatbot request failed.") from exc
 
     log_request_metrics(
@@ -140,6 +143,7 @@ def chat_stream(
                 yield _sse({"type": "token", "content": token})
 
         except Exception:
+            logger.exception("Streaming chat request failed. thread_id=%s", thread_id)
             yield _sse({"type": "error", "detail": "Chatbot request failed."})
 
             return
