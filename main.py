@@ -4,15 +4,23 @@ seeded once on startup via the lifespan handler.
 
 from __future__ import annotations
 
+import sys
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from importlib import import_module
+from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI
 
-from api.endpoints import router
-from api.middleware import setup_middleware
-from database.postgres import init_db
+PROJECT_ROOT = Path(__file__).resolve().parent
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+router = import_module("api.endpoints").router
+setup_middleware = import_module("api.middleware").setup_middleware
+init_db = import_module("database.postgres").init_db
 
 
 @asynccontextmanager
