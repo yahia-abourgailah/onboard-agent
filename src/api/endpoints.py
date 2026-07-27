@@ -55,9 +55,14 @@ def _extract_floor_map(messages: Sequence[BaseMessage]) -> dict[str, object] | N
     return None
 
 
+def _sse(payload: dict[str, object]) -> str:
+    return f"data: {json.dumps(payload)}\n\n"
+
+
 @router.get("/health")
 def health() -> dict[str, str]:
     """Public liveness probe — intentionally unauthenticated for load balancers."""
+
     return {"status": "ok"}
 
 
@@ -108,8 +113,41 @@ def chat(
     )
 
 
+@router.post("/chat/stream")
+def chat_stream(
+    request: ChatRequest,
+    http_request: Request,
+    _token: str = Depends(verify_token),
+) -> StreamingResponse:
+    session_id = http_request.cookies.get("session_id") or str(uuid.uuid4())
+
+    thread_id = http_request.cookies.get("thread_id") or str(uuid.uuid4())
+
+    def events() -> Iterator[str]:
+        try:
+            for token in stream_graph_tokens(request.prompt, thread_id):
+                yield _sse({"type": "token", "content": token})
+
+        except Exception:
+            yield _sse({"type": "error", "detail": "Chatbot request failed."})
+
+            return
+
+        yield _sse({"type": "done", "session_id": session_id, "thread_id": thread_id})
+
+    stream = StreamingResponse(events(), media_type="text/event-stream")
+
+    stream.set_cookie("session_id", session_id, httponly=True)
+
+    stream.set_cookie("thread_id", thread_id, httponly=True)
+
+    return stream
+
+
 @router.post("/new-chat")
 def new_chat(response: Response, _token: str = Depends(verify_token)) -> dict[str, str]:
     response.delete_cookie("session_id")
+
     response.delete_cookie("thread_id")
+
     return {"status": "new chat ready"}
