@@ -27,7 +27,8 @@ dependencies = [
     "python-dotenv>=1.0",
     "qdrant-client>=1.9",
     "langgraph-checkpoint-postgres",
-    "psycopg[binary,pool]"
+    "psycopg[binary,pool]",
+    "sentence-transformers>=5.6.1",
 ]
 
 [project.optional-dependencies]

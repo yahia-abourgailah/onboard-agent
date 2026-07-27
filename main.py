@@ -12,7 +12,6 @@ from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI
-from src.memory.checkpointer import checkpointer
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 SRC_ROOT = PROJECT_ROOT / "src"
@@ -22,6 +21,7 @@ if str(SRC_ROOT) not in sys.path:
 router = import_module("api.endpoints").router
 setup_middleware = import_module("api.middleware").setup_middleware
 init_db = import_module("database.postgres").init_db
+checkpointer = import_module("memory.checkpointer").checkpointer
 
 
 @asynccontextmanager
