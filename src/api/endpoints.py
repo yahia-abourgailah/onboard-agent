@@ -6,17 +6,18 @@ from __future__ import annotations
 
 import json
 import uuid
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from typing import cast
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import Response as FastAPIResponse
+from fastapi.responses import StreamingResponse
 from langchain_core.messages import BaseMessage, ToolMessage
 from pydantic import BaseModel
 
 from api.security import verify_token
 from config import FLOOR_SVG_PATH, MAPS_JSON_PATH
-from graph.build_graph import invoke_graph
+from graph.build_graph import invoke_graph, stream_graph_tokens
 
 router = APIRouter()
 
