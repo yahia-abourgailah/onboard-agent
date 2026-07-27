@@ -1,58 +1,53 @@
 {
-  "eclatic": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [>Eclatic<]  [ IT ]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "From the gates, walk straight along the top wall past Business Dev and IT — Eclatic is the last cluster at the far end on the right.",
-    "head_of_department": "Rehab Abou Zeid"
-  },
-  "it": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [>IT<]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "From the gates, walk along the top wall past the big Business Dev cluster — IT is the next one on the right.",
-    "head_of_department": "Mahmoud Halawa "
+  "tech": {
+    "route": "Right after the gates, Tech's desk area is immediately in front of you."
   },
   "business_dev": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [>Business Dev<] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [>Bus. Dev<] [ HR ] [>Bus.Dev<][>Bus.Dev<] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [>Bus.Dev<][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "The nearest Business Dev cluster is straight ahead along the top wall; more clusters sit mid-floor (all marked).",
-    "head_of_department": "Ehab Ali Ali Badr"
+    "route": "From the gates, walk left along the main aisle — the big Business Dev cluster is along the top wall; more Business Dev clusters sit in the middle rows."
   },
   "hr": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [>HR<] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [>HR<]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "Walk toward the center of the floor — HR has two clusters there, one behind the other (both marked).",
-    "head_of_department": "Mai El Aktash"
+    "route": "Walk left along the main aisle to the middle of the floor — Human Resources has two clusters there, one behind the other."
   },
   "hr_marq": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [>Marq HR<][ HR Ops ]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "Cross the floor to the far side, third row — Marq HR sits right beside HR Operations (partitioned block).",
-    "head_of_department": "Sylvia Doss"
+    "route": "Walk left along the aisle almost to the end — Marq HR is the small cluster in the back row on the far-left side."
   },
   "hr_operations": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][>HR Ops<]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "Cross the floor to the far side, third row — HR Operations is behind the partition next to Marq HR.",
-    "head_of_department": "Ramy Shams"
+    "route": "Walk left along the aisle almost to the end — HR Operations is the small cluster next to Marq HR in the back row."
   },
-  "tech": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [>Tech Dept<]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [ Bus.Dev ][>Tech<]|\n|                                [>Tech Dept<]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "Tech is right beside the entrance — the first clusters after the gates (all marked).",
-    "head_of_department": "Mohamed Reda Abd El Fattah Abd El Hamid El Gendy"
+  "it": {
+    "route": "Walk left along the main aisle — IT's desks are along the top wall, past Business Dev, next to Eclatic."
+  },
+  "eclatic": {
+    "route": "Walk left along the main aisle to the far end — Eclatic's desks are the first cluster along the top wall."
   },
   "finance": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [>Finance<]|\n| [>Finance<]|   <- left wing\n| [>Finance<]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "Walk to the far end of the floor, then into the left wing — three Finance clusters in a row.",
-    "head_of_department": "Maii Adel Abdelhamid Metwally"
+    "route": "Walk left along the main aisle to the far end, then turn down into the wing — Finance fills the wing's desk rows."
   },
   "l_and_d": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] | face id gates  |  [>L&D room<]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "Don't enter the open floor — the L&D room is the separate room just past the gates at the entrance corner on the left beside the kitchen."
+    "route": "From the gates, head right past the elevators — the L&D room is the big room at the top-right corner with the three round tables."
   },
   "kitchen": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators |>Kitchen<|\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "At the entrance corner, next to the elevators (top-right of the map)."
+    "route": "The kitchen is right next to the elevators — fridge and microwaves are there."
+  },
+  "elevators": {
+    "route": "Head back through the gates — the 3 elevators are right there."
+  },
+  "stairs_main": {
+    "route": "From the gates, go past the elevators — the stairs are just beside them."
   },
   "toilets": {
-    "map": "                     [>WC<] [>WC<]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] | face id gates  |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
-    "route": "Walk along the top wall away from the entrance — the toilets are at the middle of that wall."
+    "route": "From the gates, walk left along the top wall — the WC block is a short walk down, before the offices."
+  },
+  "offices": {
+    "route": "The private offices are along the top wall, past the WC block, toward the far end."
+  },
+  "meeting_rooms": {
+    "route": "Walk left along the main aisle all the way — the meeting rooms are on the far-left wall. There's also one at the end of the Finance wing."
+  },
+  "eclatic_meeting_rooms": {
+    "route": "Walk left along the main aisle to the far end — the Eclatic meeting rooms are the room at the top-left corner."
   },
   "gates": {
-    "map": "                     [ WC ] [ WC ]      3 Elevators | Kitchen |\n+---------------------------------------+----------------+\n| [ Eclatic ]  [ IT ]  [ Business Dev ] |>face id gates< |  [ L&D room ]\n|                                       +-----------+    |\n| [ Bus. Dev ] [ HR ] [ Bus.Dev ][ Bus.Dev ] [ Tech Dept ]\n|                                                   |\n| [ Marq HR ][ HR Ops ]  [ HR ]  [ Bus.Dev ][ Tech ]|\n|                                [ Tech Dept ]      |\n+------------+--------------------------------------+\n| [ Finance ]|\n| [ Finance ]|   <- left wing\n| [ Finance ]|\n+------------+\nYOU ARE HERE: face id gates      >...< marks your destination",
     "route": "You're at the entrance — the face ID gates, right after the elevators."
   }
 }

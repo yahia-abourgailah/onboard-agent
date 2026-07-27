@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 770" font-family="Arial, Helvetica, sans-serif">
+  <style>
+    .floor    { fill:#fbfaf7; stroke:#2b2b2b; stroke-width:3; }
+    .room     { fill:#efeee9; stroke:#9a988f; stroke-width:1.2; }
+    .zone     { fill:#e2e1dc; stroke:#9a988f; stroke-width:1.2; }
+    .deskrow  { stroke:#c7c5bc; stroke-width:3; }
+    .pod      { fill:#efeee9; stroke:#9a988f; stroke-width:1.2; }
+    .lbl      { fill:#2b2b2b; font-size:15px; text-anchor:middle; dominant-baseline:middle; }
+    .lbl-s    { fill:#2b2b2b; font-size:11.5px; text-anchor:middle; dominant-baseline:middle; }
+    .lbl-f    { fill:#6b6963; font-size:11.5px; text-anchor:middle; dominant-baseline:middle; }
+    .legend   { fill:#6b6963; font-size:12px; }
+    .route    { fill:none; stroke:#e07b12; stroke-width:3.5; stroke-dasharray:9 7;
+                stroke-linecap:round; stroke-linejoin:round; opacity:0;
+                marker-end:url(#arrow); }
+    g.section:target .zone,  g.section.highlight .zone,
+    g.section:target .room,  g.section.highlight .room
+              { fill:#fce6cc; stroke:#e07b12; stroke-width:2.5; }
+    g.section:target .route, g.section.highlight .route { opacity:1; }
+    g.section:target .lbl,   g.section.highlight .lbl,
+    g.section:target .lbl-s, g.section.highlight .lbl-s,
+    g.section:target .lbl-f, g.section.highlight .lbl-f
+              { font-weight:bold; fill:#e07b12; }
+    @media (prefers-reduced-motion: no-preference) {
+      g.section:target .route, g.section.highlight .route
+              { animation: dashmove 1.2s linear infinite; }
+      @keyframes dashmove { to { stroke-dashoffset:-32; } }
+    }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e07b12"/>
+    </marker>
+  </defs>
+
+  <!-- ===== building outline: CAD plan rotated 90° CW to match the schematic ===== -->
+  <!-- top wall: stairs, offices, WC, elevators; kitchen protrudes top-right;      -->
+  <!-- left wall: meeting rooms; east wing (Finance) extends down on the left      -->
+  <path class="floor" d="
+    M40,150 H165 V40 H905 V45 H1085 V265 H1140 V405 H285 V705 H95 V405 H40 V150 Z"/>
+
+  <!-- ============ top wall & fixed facilities ============ -->
+  <g id="eclatic_meeting_rooms" class="section">
+    <rect class="room" x="180" y="55" width="85" height="85"/>
+    <text class="lbl-f" x="222" y="90">Eclatic</text>
+    <text class="lbl-f" x="222" y="106" font-size="10">meeting rooms</text>
+    <polyline class="route" points="845,225 300,225 300,150 222,150 222,145"/>
+  </g>
+
+  <g id="offices" class="section">
+    <rect class="room" x="285" y="55" width="62" height="85"/>
+    <rect class="room" x="353" y="55" width="62" height="85"/>
+    <rect class="room" x="421" y="55" width="62" height="85"/>
+    <rect class="room" x="489" y="55" width="62" height="85"/>
+    <rect class="room" x="557" y="55" width="62" height="85"/>
+    <text class="lbl-f" x="316" y="100" font-size="10">office</text>
+    <text class="lbl-f" x="384" y="100" font-size="10">office</text>
+    <text class="lbl-f" x="452" y="100" font-size="10">office</text>
+    <text class="lbl-f" x="520" y="100" font-size="10">office</text>
+    <text class="lbl-f" x="588" y="100" font-size="10">office</text>
+    <polyline class="route" points="845,225 452,225 452,148"/>
+  </g>
+
+  <g id="toilets" class="section">
+    <rect class="room" x="640" y="55" width="130" height="85"/>
+    <text class="lbl-f" x="705" y="92">WC</text>
+    <text class="lbl-f" x="705" y="110" font-size="10">toilets</text>
+    <polyline class="route" points="845,225 705,225 705,148"/>
+  </g>
+
+  <g id="stairs_main" class="section">
+    <rect class="room" x="800" y="55" width="42" height="42"/>
+    <path d="M806,63 h30 M806,72 h30 M806,81 h30 M806,90 h30" stroke="#b9b7ae" stroke-width="2"/>
+    <text class="lbl-f" x="821" y="107" font-size="10">Stairs</text>
+    <polyline class="route" points="845,225 845,170 821,170 821,115"/>
+  </g>
+
+  <g id="kitchen" class="section">
+    <rect class="room" x="848" y="55" width="57" height="42"/>
+    <text class="lbl-f" x="876" y="72" font-size="10">Kitchen</text>
+    <text class="lbl-f" x="876" y="86" font-size="9">fridge / microwaves</text>
+    <polyline class="route" points="845,225 890,225 890,100 876,100"/>
+  </g>
+
+  <g id="elevators" class="section">
+    <rect class="room" x="800" y="118" width="85" height="45"/>
+    <path d="M812,152 l10,-13 10,13 z M838,152 l10,-13 10,13 z M864,152 l10,-13 10,13 z" fill="#b9b7ae"/>
+    <text class="lbl-f" x="842" y="128" font-size="10">3 elevators</text>
+    <polyline class="route" points="845,225 845,170"/>
+  </g>
+
+  <g id="l_and_d" class="section">
+    <rect class="room" x="915" y="50" width="160" height="205"/>
+    <circle class="pod" cx="965" cy="105" r="24"/>
+    <circle class="pod" cx="1025" cy="105" r="24"/>
+    <circle class="pod" cx="995" cy="175" r="24"/>
+    <text class="lbl-f" x="995" y="232">L&amp;D room</text>
+    <polyline class="route" points="845,225 845,195 890,195 890,150 912,150"/>
+  </g>
+
+  <g id="gates" class="section">
+    <rect class="room" x="790" y="178" width="115" height="24" rx="6"/>
+    <text class="lbl-f" x="847" y="190">face ID gates</text>
+  </g>
+
+  <!-- ============ left wall: meeting rooms ============ -->
+  <g id="meeting_rooms" class="section">
+    <rect class="room" x="52" y="165" width="105" height="70"/>
+    <rect class="room" x="52" y="243" width="105" height="70"/>
+    <rect class="room" x="52" y="321" width="105" height="72"/>
+    <text class="lbl-f" x="104" y="196">Meeting</text>
+    <text class="lbl-f" x="104" y="212" font-size="10">room</text>
+    <text class="lbl-f" x="104" y="274">Meeting</text>
+    <text class="lbl-f" x="104" y="290" font-size="10">room</text>
+    <text class="lbl-f" x="104" y="353">Meeting</text>
+    <text class="lbl-f" x="104" y="369" font-size="10">room</text>
+    <polyline class="route" points="845,225 180,225 180,278 162,278"/>
+  </g>
+
+  <!-- ============ department zones (schematic mapping) ============ -->
+  <!-- Row 1, along the top wall: Eclatic | IT | Business Dev -->
+  <g id="eclatic" class="section">
+    <rect class="zone" x="190" y="165" width="140" height="75"/>
+    <path class="deskrow" d="M202,190 h116 M202,215 h116"/>
+    <text class="lbl" x="260" y="178">Eclatic</text>
+    <polyline class="route" points="845,250 260,250 260,245"/>
+  </g>
+
+  <g id="it" class="section">
+    <rect class="zone" x="350" y="165" width="120" height="75"/>
+    <path class="deskrow" d="M362,190 h96 M362,215 h96"/>
+    <text class="lbl" x="410" y="178">IT</text>
+    <polyline class="route" points="845,250 410,250 410,245"/>
+  </g>
+
+  <g id="business_dev" class="section">
+    <rect class="zone" x="490" y="165" width="230" height="75"/>
+    <path class="deskrow" d="M502,190 h206 M502,215 h206"/>
+    <text class="lbl" x="605" y="178">Business Dev</text>
+    <rect class="zone" x="190" y="262" width="140" height="60"/>
+    <path class="deskrow" d="M202,290 h116 M202,308 h116"/>
+    <text class="lbl-s" x="260" y="275">Business Dev</text>
+    <rect class="zone" x="490" y="262" width="105" height="60"/>
+    <path class="deskrow" d="M500,290 h85 M500,308 h85"/>
+    <text class="lbl-s" x="542" y="275">Business Dev</text>
+    <rect class="zone" x="610" y="262" width="105" height="60"/>
+    <path class="deskrow" d="M620,290 h85 M620,308 h85"/>
+    <text class="lbl-s" x="662" y="275">Business Dev</text>
+    <rect class="zone" x="490" y="335" width="105" height="58"/>
+    <path class="deskrow" d="M500,360 h85 M500,378 h85"/>
+    <text class="lbl-s" x="542" y="347">Business Dev</text>
+    <polyline class="route" points="845,250 605,250 605,245"/>
+  </g>
+
+  <!-- Row 2 / Row 3, deeper into the hall -->
+  <g id="hr" class="section">
+    <rect class="zone" x="350" y="262" width="120" height="60"/>
+    <path class="deskrow" d="M362,290 h96 M362,308 h96"/>
+    <text class="lbl-s" x="410" y="275">Human Resources</text>
+    <rect class="zone" x="350" y="335" width="120" height="58"/>
+    <path class="deskrow" d="M362,360 h96 M362,378 h96"/>
+    <text class="lbl-s" x="410" y="347">Human Resources</text>
+    <polyline class="route" points="845,250 480,250 480,270 475,270"/>
+  </g>
+
+  <g id="hr_marq" class="section">
+    <rect class="zone" x="190" y="335" width="66" height="58"/>
+    <path class="deskrow" d="M198,362 h50 M198,378 h50"/>
+    <text class="lbl-s" x="223" y="347">Marq HR</text>
+    <polyline class="route" points="845,250 175,250 175,347 185,347"/>
+  </g>
+
+  <g id="hr_operations" class="section">
+    <rect class="zone" x="262" y="335" width="66" height="58"/>
+    <path class="deskrow" d="M270,362 h50 M270,378 h50"/>
+    <text class="lbl-s" x="295" y="347">HR Ops</text>
+    <polyline class="route" points="845,250 175,250 175,330 295,330 295,332"/>
+  </g>
+
+  <g id="tech" class="section">
+    <rect class="zone" x="740" y="262" width="165" height="131"/>
+    <path class="deskrow" d="M752,292 h140 M752,320 h140 M752,348 h140 M752,372 h140"/>
+    <text class="lbl" x="822" y="276">Tech</text>
+    <rect class="zone" x="610" y="335" width="105" height="58"/>
+    <path class="deskrow" d="M620,360 h85 M620,378 h85"/>
+    <text class="lbl-s" x="662" y="347">Tech</text>
+    <polyline class="route" points="845,225 845,257"/>
+  </g>
+
+  <!-- ============ east wing (extends down-left): Finance + L&D ============ -->
+  <g id="finance" class="section">
+    <rect class="zone" x="108" y="418" width="165" height="185"/>
+    <path class="deskrow" d="M120,455 h140 M120,490 h140 M120,525 h140 M120,560 h140"/>
+    <text class="lbl" x="190" y="435">Finance</text>
+    <polyline class="route" points="845,250 190,250 190,330 190,423"/>
+  </g>
+
+  <!-- enclosed room at the wing end -->
+  <rect class="room" x="108" y="615" width="165" height="80"/>
+  <text class="lbl-f" x="190" y="650">Meeting room</text>
+
+  <!-- circular meeting pods in the hall (fixed landmarks) -->
+  <circle class="pod" cx="428" cy="250" r="17"/>
+  <circle class="pod" cx="262" cy="250" r="17"/>
+
+  <!-- entrance marker + legend -->
+  <circle cx="845" cy="225" r="7" fill="#e07b12"/>
+  <text class="legend" x="858" y="230">you are here (after the gates)</text>
+  <text class="legend" x="330" y="440">Grey zones = team desk areas. Open space is walkable.</text>
+  <text class="legend" x="330" y="458">Highlighted zone + dashed line = your route from the gates.</text>
+</svg>
