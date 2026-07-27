@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from typing import Any
 
 from dotenv import load_dotenv
@@ -42,3 +43,18 @@ def invoke_graph(question: str, thread_id: str) -> dict[str, Any]:
         config=config,
     )
     return result
+
+
+def stream_graph_tokens(question: str, thread_id: str) -> Iterator[str]:
+    """Yield LLM text tokens from the agent graph (final assistant reply streams token-by-token)."""
+    config = RunnableConfig(configurable={"thread_id": thread_id})
+    for chunk, metadata in _graph.stream(
+        {"messages": [{"role": "user", "content": question}]},
+        config=config,
+        stream_mode="messages",
+    ):
+        if metadata.get("langgraph_node") != "llm":
+            continue
+        content = chunk.content
+        if isinstance(content, str) and content:
+            yield content
