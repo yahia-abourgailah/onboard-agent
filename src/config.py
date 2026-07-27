@@ -5,6 +5,7 @@ environment — development, staging, production — supplies its own values via
 the platform's secret/variable store; nothing is hardcoded here.
 """
 
+import os
 from enum import StrEnum
 from pathlib import Path
 
@@ -15,6 +16,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 MAPS_JSON_PATH = DATA_DIR / "maps.json"
+FLOOR_SVG_PATH = DATA_DIR / "floor.svg"
+
+PUBLIC_API_BASE_URL = os.getenv("PUBLIC_API_BASE_URL", "http://localhost:8000")
 
 
 class Environment(StrEnum):
