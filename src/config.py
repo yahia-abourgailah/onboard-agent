@@ -41,7 +41,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    environment: Environment = Field(default=Environment.PRODUCTION)
+    environment: Environment = Field(default=Environment.DEVELOPMENT)
     debug: bool = Field(default=False)
     OPENAI_API_KEY: str = Field(default="")
     OPENAI_BASE_URL: str = Field(default="")
