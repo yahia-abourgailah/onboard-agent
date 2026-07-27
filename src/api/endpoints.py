@@ -5,10 +5,10 @@ token-protected /chat that runs the agent graph.
 from __future__ import annotations
 
 import json
+import logging
 import uuid
 from collections.abc import Iterator, Sequence
 from typing import cast
-import logging
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import Response as FastAPIResponse
@@ -22,7 +22,7 @@ from config import FLOOR_SVG_PATH, MAPS_JSON_PATH
 from graph.build_graph import invoke_graph, stream_graph_tokens
 
 router = APIRouter()
-logger= logging.getLogger("onboard_agent")
+logger = logging.getLogger("onboard_agent")
 
 with open(FLOOR_SVG_PATH, encoding="utf-8") as f:
     _FLOOR_SVG = f.read()

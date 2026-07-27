@@ -24,10 +24,7 @@ async def verify_token(
     settings = get_settings()
 
     if not settings.API_TOKEN:
-        if (
-            settings.ALLOW_UNAUTHENTICATED
-            and settings.environment is Environment.DEVELOPMENT
-        ):
+        if settings.ALLOW_UNAUTHENTICATED and settings.environment is Environment.DEVELOPMENT:
             return ""
 
         raise HTTPException(
