@@ -65,6 +65,14 @@ class Settings(BaseSettings):
     LANGSMITH_API_KEY: str = Field(default="")
     LANGSMITH_PROJECT: str = Field(default="")
     LANGSMITH_ENDPOINT: str = Field(default="")
+    QDRANT_URL: str = Field(
+        default="http://localhost:6333",
+        description="URL of the Qdrant vector store used for the knowledge base.",
+    )
+    POSTGRES_URL: str = Field(
+        default="postgresql://postgres:postgres@localhost:5432/postgres",
+        description="URL of the Postgres database used for persistent state.",
+    )
     ALLOW_UNAUTHENTICATED: bool = Field(
     default=False,
     description="Allow unauthenticated requests. Intended only for local development.")

@@ -25,7 +25,9 @@ dependencies = [
     "sqlmodel>=0.0.16",
     "alembic>=1.13",
     "python-dotenv>=1.0",
-    "qdrant-client>=1.9"
+    "qdrant-client>=1.9",
+    "langgraph-checkpoint-postgres",
+    "psycopg[binary,pool]"
 ]
 
 [project.optional-dependencies]

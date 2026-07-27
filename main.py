@@ -12,12 +12,14 @@ from fastapi import FastAPI
 
 from api.endpoints import router
 from api.middleware import setup_middleware
+from memory.checkpointer import checkpointer
 from database.postgres import init_db
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     init_db()
+    checkpointer.setup()
     yield
 
 
