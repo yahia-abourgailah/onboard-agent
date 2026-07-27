@@ -10,6 +10,13 @@ from config import Environment, get_settings
 _bearer_scheme = HTTPBearer(auto_error=False)
 
 
+def get_user_id(credentials: HTTPAuthorizationCredentials | None) -> str:
+    """Return a stable user identifier based on the bearer token when present."""
+    if credentials is None:
+        return "anonymous"
+    return credentials.credentials or "anonymous"
+
+
 async def verify_token(
     credentials: HTTPAuthorizationCredentials | None = Depends(_bearer_scheme),
 ) -> str:

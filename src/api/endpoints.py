@@ -15,6 +15,7 @@ from fastapi.responses import StreamingResponse
 from langchain_core.messages import BaseMessage, ToolMessage
 from pydantic import BaseModel
 
+from api.metrics import log_request_metrics
 from api.security import verify_token
 from config import FLOOR_SVG_PATH, MAPS_JSON_PATH
 from graph.build_graph import invoke_graph, stream_graph_tokens
@@ -107,6 +108,13 @@ def chat(
         result = invoke_graph(request.prompt, thread_id)
     except Exception as exc:
         raise HTTPException(status_code=502, detail="Chatbot request failed.") from exc
+
+    log_request_metrics(
+        user_id=session_id,
+        session_id=session_id,
+        latency_ms=0.0,
+        usage_metadata=None,
+    )
 
     return ChatResponse(
         response=result["messages"][-1].content,
