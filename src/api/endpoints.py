@@ -6,16 +6,26 @@ from __future__ import annotations
 
 import json
 import uuid
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
+from typing import cast
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi.responses import Response as FastAPIResponse
 from fastapi.responses import StreamingResponse
+from langchain_core.messages import BaseMessage, ToolMessage
 from pydantic import BaseModel
 
 from api.security import verify_token
+from config import FLOOR_SVG_PATH, MAPS_JSON_PATH
 from graph.build_graph import invoke_graph, stream_graph_tokens
 
 router = APIRouter()
+
+with open(FLOOR_SVG_PATH, encoding="utf-8") as f:
+    _FLOOR_SVG = f.read()
+
+with open(MAPS_JSON_PATH, encoding="utf-8") as f:
+    _VALID_DESTINATIONS = list(json.load(f).keys())
 
 
 class ChatRequest(BaseModel):
@@ -26,6 +36,26 @@ class ChatResponse(BaseModel):
     response: str
     session_id: str
     thread_id: str
+    floor_map: dict[str, object] | None = None
+    # {"destination", "url", "route"} when directions were given
+
+
+def _extract_floor_map(messages: Sequence[BaseMessage]) -> dict[str, object] | None:
+    """Pull the most recent get_office_directions tool result out of this
+    turn's messages, if the agent called it, so the frontend can render the
+    highlighted floor map instead of relying on the LLM to describe it."""
+    for msg in reversed(messages):
+        if isinstance(msg, ToolMessage) and msg.name == "get_office_directions":
+            if not isinstance(msg.content, str):
+                return None
+            try:
+                data = json.loads(msg.content)
+            except (json.JSONDecodeError, TypeError):
+                return None
+            if isinstance(data, dict) and data.get("type") == "floor_map":
+                return cast(dict[str, object], data)
+            return None
+    return None
 
 
 def _sse(payload: dict[str, object]) -> str:
@@ -39,6 +69,27 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@router.get("/floor-map")
+def floor_map(highlight: str | None = None) -> FastAPIResponse:
+    """Public by design: an <img src="..."> tag in the chat UI can't attach
+    a bearer token, and the SVG itself has no sensitive content."""
+    svg = _FLOOR_SVG
+    if highlight is not None:
+        if highlight not in _VALID_DESTINATIONS:
+            raise HTTPException(
+                400, f"Unknown destination '{highlight}'. Valid: {_VALID_DESTINATIONS}"
+            )
+        svg = svg.replace(
+            f'<g id="{highlight}" class="section">',
+            f'<g id="{highlight}" class="section highlight">',
+        )
+    return FastAPIResponse(
+        content=svg,
+        media_type="image/svg+xml",
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
+
+
 @router.post("/chat", response_model=ChatResponse)
 def chat(
     request: ChatRequest,
@@ -46,8 +97,6 @@ def chat(
     response: Response,
     _token: str = Depends(verify_token),
 ) -> ChatResponse:
-    # Read cookies manually so they never show up as declared parameters in
-    # the Swagger docs — /chat visually only ever takes `prompt`.
     session_id = http_request.cookies.get("session_id") or str(uuid.uuid4())
     thread_id = http_request.cookies.get("thread_id") or str(uuid.uuid4())
 
@@ -63,6 +112,7 @@ def chat(
         response=result["messages"][-1].content,
         session_id=session_id,
         thread_id=thread_id,
+        floor_map=_extract_floor_map(result["messages"]),
     )
 
 
@@ -99,10 +149,6 @@ def chat_stream(
 
 @router.post("/new-chat")
 def new_chat(response: Response, _token: str = Depends(verify_token)) -> dict[str, str]:
-    """Clears session cookies so the next /chat call starts a fresh
-
-    session_id and thread_id — i.e. a brand new conversation."""
-
     response.delete_cookie("session_id")
 
     response.delete_cookie("thread_id")
