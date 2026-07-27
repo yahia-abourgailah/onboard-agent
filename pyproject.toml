@@ -24,6 +24,8 @@ dependencies = [
     # DB layer + migrations (from the database PR): SQLModel ORM and Alembic.
     "sqlmodel>=0.0.16",
     "alembic>=1.13",
+    "python-dotenv>=1.0",
+    "qdrant-client>=1.9"
 ]
 
 [project.optional-dependencies]

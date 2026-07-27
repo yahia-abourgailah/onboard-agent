@@ -37,7 +37,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    environment: Environment = Field(default=Environment.DEVELOPMENT)
+    environment: Environment = Field(default=Environment.PRODUCTION)
     debug: bool = Field(default=False)
     OPENAI_API_KEY: str = Field(default="")
     OPENAI_BASE_URL: str = Field(default="")
@@ -57,6 +57,9 @@ class Settings(BaseSettings):
     LANGSMITH_API_KEY: str = Field(default="")
     LANGSMITH_PROJECT: str = Field(default="")
     LANGSMITH_ENDPOINT: str = Field(default="")
+    ALLOW_UNAUTHENTICATED: bool = Field(
+    default=False,
+    description="Allow unauthenticated requests. Intended only for local development.")
 
     @property
     def is_production(self) -> bool:

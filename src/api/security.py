@@ -17,8 +17,12 @@ async def verify_token(
     settings = get_settings()
 
     if not settings.API_TOKEN:
-        if settings.environment is Environment.DEVELOPMENT:
+        if (
+            settings.ALLOW_UNAUTHENTICATED
+            and settings.environment is Environment.DEVELOPMENT
+        ):
             return ""
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="API_TOKEN is not configured on the server",

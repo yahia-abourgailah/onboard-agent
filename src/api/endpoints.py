@@ -7,6 +7,8 @@ from __future__ import annotations
 import json
 import uuid
 from collections.abc import Iterator
+import logging
+
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import StreamingResponse
@@ -16,7 +18,7 @@ from api.security import verify_token
 from graph.build_graph import invoke_graph, stream_graph_tokens
 
 router = APIRouter()
-
+logger= logging.getLogger("onboard_agent")
 
 class ChatRequest(BaseModel):
     prompt: str
@@ -58,6 +60,7 @@ def chat(
     try:
         result = invoke_graph(request.prompt, thread_id)
     except Exception as exc:
+        logger.exception("Chat request failed. thread_id=%s", thread_id)
         raise HTTPException(status_code=502, detail="Chatbot request failed.") from exc
 
     return ChatResponse(
@@ -85,6 +88,7 @@ def chat_stream(
                 yield _sse({"type": "token", "content": token})
 
         except Exception:
+            logger.exception("Streaming chat request failed. thread_id=%s", thread_id)
             yield _sse({"type": "error", "detail": "Chatbot request failed."})
 
             return
