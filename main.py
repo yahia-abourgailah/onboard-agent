@@ -22,12 +22,16 @@ router = import_module("api.endpoints").router
 setup_middleware = import_module("api.middleware").setup_middleware
 init_db = import_module("database.postgres").init_db
 checkpointer = import_module("memory.checkpointer").checkpointer
+get_vector_store = import_module("vectorstore.creation").get_vector_store
+get_graph = import_module("graph.build_graph").get_graph
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     init_db()
     checkpointer.setup()
+    get_vector_store()
+    get_graph()
     yield
 
 

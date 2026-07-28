@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 
 from langchain_community.document_loaders import PyPDFLoader
@@ -49,7 +50,8 @@ def chunk_documents(
     return splitter.split_documents(documents)
 
 
-def build_vector_store(
+@lru_cache(maxsize=1)
+def get_vector_store(
     collection_name: str = "onboarding_kb",
     data_dir: Path = DATA_DIR,
     qdrant_url: str | None = None,

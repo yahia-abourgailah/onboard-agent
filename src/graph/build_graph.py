@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from functools import lru_cache
 from typing import Any
 
 from dotenv import load_dotenv
@@ -16,7 +17,8 @@ load_dotenv()  # Loads variables from .env
 
 # Typed as the Runnable interface the compiled graph exposes (invoke). This stays
 # stable across langgraph versions, unlike CompiledStateGraph's generic arity.
-def build_graph() -> Runnable[Any, Any]:
+@lru_cache(maxsize=1)
+def get_graph() -> Runnable[Any, Any]:
     graph_builder = StateGraph(AgentState)
 
     graph_builder.add_node("llm", call_llm)
@@ -29,16 +31,10 @@ def build_graph() -> Runnable[Any, Any]:
     return graph_builder.compile(checkpointer=checkpointer)
 
 
-# Build ONCE at import time. If you rebuild the graph per-request, MemorySaver's
-# in-memory store effectively gets orphaned/discarded depending on how it's
-# referenced — always reuse one compiled graph.
-_graph = build_graph()
-
-
 def invoke_graph(question: str, thread_id: str) -> dict[str, Any]:
     config = RunnableConfig(configurable={"thread_id": thread_id})
     # Only pass the NEW message — the checkpointer restores everything before it.
-    result: dict[str, Any] = _graph.invoke(
+    result: dict[str, Any] = get_graph().invoke(
         {"messages": [{"role": "user", "content": question}]},
         config=config,
     )
@@ -48,7 +44,7 @@ def invoke_graph(question: str, thread_id: str) -> dict[str, Any]:
 def stream_graph_tokens(question: str, thread_id: str) -> Iterator[str]:
     """Yield LLM text tokens from the agent graph (final assistant reply streams token-by-token)."""
     config = RunnableConfig(configurable={"thread_id": thread_id})
-    for chunk, metadata in _graph.stream(
+    for chunk, metadata in get_graph().stream(
         {"messages": [{"role": "user", "content": question}]},
         config=config,
         stream_mode="messages",
