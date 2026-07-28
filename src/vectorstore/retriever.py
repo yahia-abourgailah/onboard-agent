@@ -17,7 +17,7 @@ def _get_vector_store() -> QdrantVectorStore:
     return build_vector_store()
 
 
-def search_knowledge_base(query: str, k: int = 5) -> str:
+def search_knowledge_base(query: str, k: int = 8) -> str:
     try:
         results = _get_vector_store().similarity_search(query, k=k)
     except Exception as exc:

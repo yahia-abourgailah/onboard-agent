@@ -1658,11 +1658,8 @@ dependencies = [
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pypdf" },
-<<<<<<< HEAD
-=======
     { name = "python-dotenv" },
     { name = "qdrant-client" },
->>>>>>> f832fb818e5f7f514de9127d5ae53c2dcf0d2b9a
     { name = "sentence-transformers" },
     { name = "sqlmodel" },
     { name = "uvicorn" },
