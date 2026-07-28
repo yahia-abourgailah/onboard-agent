@@ -1,0 +1,407 @@
+[
+  {
+    "ID": 1,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "How many annual leave days do I get after completing one full year with the company?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "21 days; 30 days for employees over 50 or with 10+ years of insured service."
+  },
+  {
+    "ID": 2,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "What is the dress code on Thursdays?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Code of Conduct / Hiring Documents",
+    "Expected Answer / Notes": "Standard dress code is Smart/Semi-formal; casual is permitted only on Thursdays."
+  },
+  {
+    "ID": 3,
+    "Language": "English",
+    "Category": "Who-to-ask",
+    "Question": "Who prepares my laptop and email before my first day?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Pre-Boarding Preparations",
+    "Expected Answer / Notes": "IT team prepares IT assets (laptop, email, etc.)."
+  },
+  {
+    "ID": 4,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "What documents do I need to submit before I can be officially appointed?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Hiring Documents",
+    "Expected Answer / Notes": "National ID copy, original birth certificate, original graduation certificate, military service certificate (males), original criminal record certificate, 6 personal photos, valid work record, recent Form 6 / insurance certificate, CV, Form 111."
+  },
+  {
+    "ID": 5,
+    "Language": "English",
+    "Category": "Who-to-ask",
+    "Question": "Who is the CEO of The Address Investments?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "History and Organization Structure",
+    "Expected Answer / Notes": "Mostafa Badr — Board Member, Co-founder of The MarQ Communities, and CEO of The Address Investments."
+  },
+  {
+    "ID": 6,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "What are the company's core values?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Code of Conduct / Brand Strategy",
+    "Expected Answer / Notes": "Aim Higher Achieve More, Sharp Minds, We Win Together, Humility First, Always Hungry."
+  },
+  {
+    "ID": 7,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "How many days of sick leave am I entitled to at full pay?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "First 15 days at full pay, next 75 days at 75%, next 90 days at 85%."
+  },
+  {
+    "ID": 8,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "Can I carry over unused annual leave into next year?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "No — the company does not carry forward leave; the full balance must be used within the year."
+  },
+  {
+    "ID": 9,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "What are the official working hours during Ramadan?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "6 working hours daily, flexible arrival between 9:00 and 11:00 AM."
+  },
+  {
+    "ID": 10,
+    "Language": "English",
+    "Category": "Who-to-ask",
+    "Question": "Who approves a work-from-home request?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01) / Code of Conduct",
+    "Expected Answer / Notes": "The direct manager and the HR Operations Department, submitted in advance via the MY TAI app."
+  },
+  {
+    "ID": 11,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "What is the maximum unpaid leave I can take?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "One month, granted only once during the employee's entire period of employment."
+  },
+  {
+    "ID": 12,
+    "Language": "English",
+    "Category": "Policy",
+    "Question": "Does bereavement leave cover the death of a cousin?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "No — bereavement leave only covers father, mother, husband, wife, children, or sisters; a cousin is not included."
+  },
+  {
+    "ID": 13,
+    "Language": "English",
+    "Category": "Out-of-scope",
+    "Question": "What exactly is my monthly salary and when will it be paid?",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "N/A — individual payroll data not in knowledge base",
+    "Expected Answer / Notes": "Escalate to HR Operations; note salary is only calculated once hiring documents are fully submitted."
+  },
+  {
+    "ID": 14,
+    "Language": "English",
+    "Category": "Out-of-scope",
+    "Question": "Can you approve my leave request right now?",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "N/A — chatbot has no approval authority",
+    "Expected Answer / Notes": "Escalate: leave must be requested through the MY TAI app and approved by the direct manager."
+  },
+  {
+    "ID": 15,
+    "Language": "English",
+    "Category": "Out-of-scope",
+    "Question": "I want to report a harassment complaint about a colleague — what do I do?",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "N/A — sensitive/confidential matter",
+    "Expected Answer / Notes": "Escalate directly to HR; do not attempt to resolve or discuss details in the chatbot."
+  },
+  {
+    "ID": 16,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "كم عدد أيام الإجازة السنوية المستحقة بعد إتمام عام كامل في الشركة؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "سياسة الحضور والانصراف والإجازات (POL-01)",
+    "Expected Answer / Notes": "21 يوماً، و30 يوماً للموظفين فوق سن الخمسين أو ممن أمضوا 10 سنوات فأكثر مع إثبات اشتراك تأميني."
+  },
+  {
+    "ID": 17,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "ما هو نظام الزي الرسمي المسموح به يوم الخميس؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "مدونة السلوك / مستندات التعيين",
+    "Expected Answer / Notes": "الزي الرسمي المعتاد Smart Casual، ويُسمح بالزي الكاجوال فقط يوم الخميس."
+  },
+  {
+    "ID": 18,
+    "Language": "Arabic",
+    "Category": "Who-to-ask",
+    "Question": "من المسؤول عن تجهيز جهاز اللابتوب والبريد الإلكتروني قبل أول يوم عمل؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "إجراءات ما قبل الالتحاق (Pre-Boarding)",
+    "Expected Answer / Notes": "فريق تكنولوجيا المعلومات (IT) هو المسؤول عن تجهيز أصول تقنية المعلومات."
+  },
+  {
+    "ID": 19,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "ما هي المستندات المطلوبة لإتمام التعيين؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "مسوغات التعيين (Hiring Documents)",
+    "Expected Answer / Notes": "صورة بطاقة الرقم القومي، أصل شهادة الميلاد، أصل شهادة التخرج، شهادة الخدمة العسكرية (للذكور)، أصل صحيفة الحالة الجنائية، 6 صور شخصية، كعب عمل ساري، استمارة 6 حديثة، السيرة الذاتية، استمارة 111."
+  },
+  {
+    "ID": 20,
+    "Language": "Arabic",
+    "Category": "Who-to-ask",
+    "Question": "من هو الرئيس التنفيذي لشركة ذا أدرس إنفستمنتس؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "تاريخ الشركة والهيكل التنظيمي",
+    "Expected Answer / Notes": "مصطفى بدر — عضو مجلس إدارة، شريك مؤسس لشركة ذا ماركت كوميونتيز، والرئيس التنفيذي لشركة ذا أدرس إنفستمنتس."
+  },
+  {
+    "ID": 21,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "ما هي القيم الأساسية للشركة؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "مدونة السلوك / استراتيجية العلامة التجارية",
+    "Expected Answer / Notes": "الطموح لتحقيق المزيد، العقول الذكية، معاً نفوز، التواضع أولاً، دائماً متعطشون للنجاح."
+  },
+  {
+    "ID": 22,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "كم يوم إجازة مرضية بأجر كامل يستحقها الموظف؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "سياسة الحضور والانصراف والإجازات (POL-01)",
+    "Expected Answer / Notes": "أول 15 يوماً بأجر كامل، ثم 75 يوماً بأجر 75%، ثم 90 يوماً بأجر 85%."
+  },
+  {
+    "ID": 23,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "هل يمكن ترحيل رصيد الإجازة السنوية غير المستخدم للعام القادم؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "سياسة الحضور والانصراف والإجازات (POL-01)",
+    "Expected Answer / Notes": "لا، لا تقوم الشركة بترحيل الإجازات، ويجب استهلاك الرصيد بالكامل خلال العام."
+  },
+  {
+    "ID": 24,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "ما هي ساعات العمل الرسمية خلال شهر رمضان؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "سياسة الحضور والانصراف والإجازات (POL-01)",
+    "Expected Answer / Notes": "6 ساعات عمل يومياً، بحضور مرن من الساعة 9 حتى 11 صباحاً."
+  },
+  {
+    "ID": 25,
+    "Language": "Arabic",
+    "Category": "Who-to-ask",
+    "Question": "من يوافق على طلب العمل من المنزل؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "سياسة الحضور والانصراف والإجازات (POL-01) / مدونة السلوك",
+    "Expected Answer / Notes": "المدير المباشر وإدارة عمليات الموارد البشرية، ويُقدَّم الطلب مسبقاً عبر تطبيق MY TAI."
+  },
+  {
+    "ID": 26,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "ما هو الحد الأقصى للإجازة بدون أجر التي يمكن الحصول عليها؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "سياسة الحضور والانصراف والإجازات (POL-01)",
+    "Expected Answer / Notes": "شهر واحد فقط، ولمرة واحدة طوال مدة العمل بالشركة."
+  },
+  {
+    "ID": 27,
+    "Language": "Arabic",
+    "Category": "Policy",
+    "Question": "ما هي مدة إجازة الزواج المستحقة؟",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "سياسة الحضور والانصراف والإجازات (POL-01)",
+    "Expected Answer / Notes": "5 أيام مدفوعة الأجر، مرة واحدة طوال الخدمة، بشرط مرور 6 أشهر من التعيين."
+  },
+  {
+    "ID": 28,
+    "Language": "Arabic",
+    "Category": "Out-of-scope",
+    "Question": "ما هو راتبي الشهري بالتحديد وموعد صرفه؟",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "غير متاح — بيانات الرواتب الفردية غير موجودة في قاعدة المعرفة",
+    "Expected Answer / Notes": "تصعيد لإدارة عمليات الموارد البشرية؛ مع ملاحظة أن الراتب يُحتسب فقط بعد استكمال مستندات التعيين."
+  },
+  {
+    "ID": 29,
+    "Language": "Arabic",
+    "Category": "Out-of-scope",
+    "Question": "هل يمكنك الموافقة على طلب إجازتي الآن؟",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "غير متاح — الشات بوت لا يملك صلاحية الموافقة",
+    "Expected Answer / Notes": "تصعيد: يجب تقديم طلب الإجازة عبر تطبيق MY TAI وموافقة المدير المباشر."
+  },
+  {
+    "ID": 30,
+    "Language": "Arabic",
+    "Category": "Out-of-scope",
+    "Question": "ما هي كلمة سر الواي فاي في المكتب؟",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "غير متاح — غير مذكور في المستندات",
+    "Expected Answer / Notes": "تصعيد لفريق تكنولوجيا المعلومات (IT)."
+  },
+  {
+    "ID": 31,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "kam yom agaza sanawiya ba3d sana kamla fel shoghl?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "21 yom; 30 yom lel muwazafeen fo2 sen el 50 aw el 3andohom 10 seneen khedma bel ta2meen."
+  },
+  {
+    "ID": 32,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "eh el dress code yom el khamis?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Code of Conduct / Hiring Documents",
+    "Expected Answer / Notes": "Smart Casual el ayam el 3adeya, w casual masmoo7 bass yom el khamis."
+  },
+  {
+    "ID": 33,
+    "Language": "Franco-Arabic",
+    "Category": "Who-to-ask",
+    "Question": "meen el mas2oul 3an tageheez el laptop wel email 2abl awel yom?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Pre-Boarding Preparations",
+    "Expected Answer / Notes": "fariq el IT howa el mas2oul 3an tageheez el IT assets."
+  },
+  {
+    "ID": 34,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "eh el waraq el matlouba 3ashan yetimm el ta3yin?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Hiring Documents",
+    "Expected Answer / Notes": "sourat el bataka, asl shehadet el milad, asl shehadet el takharrog, shehadet el khedma el 3askareya (lel zokour), asl safhet el hala el genaeya, 6 soar shakhseya, ka3b 3amal sary, estimara 6, CV, estimara 111."
+  },
+  {
+    "ID": 35,
+    "Language": "Franco-Arabic",
+    "Category": "Who-to-ask",
+    "Question": "meen el CEO bta3 The Address Investments?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "History and Organization Structure",
+    "Expected Answer / Notes": "Mostafa Badr — Board Member, co-founder bta3 The MarQ Communities, w CEO bta3 The Address Investments."
+  },
+  {
+    "ID": 36,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "eh el core values bta3et el sherka?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Code of Conduct / Brand Strategy",
+    "Expected Answer / Notes": "Aim Higher Achieve More, Sharp Minds, We Win Together, Humility First, Always Hungry."
+  },
+  {
+    "ID": 37,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "kam yom sick leave bi full pay?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "awel 15 yom full pay, ba3deen 75 yom bi 75%, ba3deen 90 yom bi 85%."
+  },
+  {
+    "ID": 38,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "momken a rag3 el agaza el sanawya el fadla lel sana el gaya?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "la2, el sherka mabterag3sh el agazat, lazem testa5dem el rasid kolo fel sana."
+  },
+  {
+    "ID": 39,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "sa3at el shoghl el rasmeya fi Ramadan kam?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "6 sa3at yawmeyan, 7odor mrn min el sa3a 9 lel 11 el sob7."
+  },
+  {
+    "ID": 40,
+    "Language": "Franco-Arabic",
+    "Category": "Who-to-ask",
+    "Question": "meen elly biwafi2 3ala talab el shoghl mn el manzel?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01) / Code of Conduct",
+    "Expected Answer / Notes": "el manager el mubasher w edaret 3amaliyat el mawared el bashareya, 3an tari2 MY TAI app."
+  },
+  {
+    "ID": 41,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "eh a2sa mudda agaza min gher murtab momken akhodha?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "shahr wahed bass, w marra wahda tool fatret el 3amal fel sherka."
+  },
+  {
+    "ID": 42,
+    "Language": "Franco-Arabic",
+    "Category": "Policy",
+    "Question": "agazet el wad3 (maternity) madfou3a bel kamel?",
+    "Expected Outcome": "Answer + Source",
+    "Expected Source / Owner": "Leaves & Attendance Policy (POL-01)",
+    "Expected Answer / Notes": "aywa, 4 shohor bi agr kamel, bit-bda2 min tarikh el wad3."
+  },
+  {
+    "ID": 43,
+    "Language": "Franco-Arabic",
+    "Category": "Out-of-scope",
+    "Question": "eh raatby bel zabt w emta hayetsraf?",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "N/A — bayanat el marattib el shakhseya mesh mawgoda",
+    "Expected Answer / Notes": "escalate le HR Operations; el raatib bi yet7sab bas ba3d tasleem waraq el ta3yin bel kamel."
+  },
+  {
+    "ID": 44,
+    "Language": "Franco-Arabic",
+    "Category": "Out-of-scope",
+    "Question": "momken tewafe2 3ala el agaza bta3ty dilwa2ty?",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "N/A — el chatbot mesh 3ando salaheyet mowafaqa",
+    "Expected Answer / Notes": "escalate: lazem el talab yeb2a 3an tari2 MY TAI w mowafaqet el manager el mubasher."
+  },
+  {
+    "ID": 45,
+    "Language": "Franco-Arabic",
+    "Category": "Out-of-scope",
+    "Question": "3andy mashkla shakhseya ma3 zamili fel shoghl, a3mel eh?",
+    "Expected Outcome": "Escalate",
+    "Expected Source / Owner": "N/A — mesh mawgoda fel KB, mas2ala hasasa",
+    "Expected Answer / Notes": "escalate lel manager el mubasher aw HR mubasharatan, mesh haga byetiganwez fel chatbot."
+  }
+]

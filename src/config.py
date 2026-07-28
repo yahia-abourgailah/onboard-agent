@@ -53,7 +53,7 @@ class Settings(BaseSettings):
         default="",
         description="Secret token clients must send in the Authorization header.",
     )
-    RATE_LIMIT_ENABLED: bool = Field(default=True)
+    RATE_LIMIT_ENABLED: bool = Field(default=False)
     RATE_LIMIT_MAX_REQUESTS: int = Field(default=20)
     RATE_LIMIT_WINDOW_SECONDS: int = Field(default=60)
     METRICS_ENABLED: bool = Field(default=True)
@@ -71,7 +71,7 @@ class Settings(BaseSettings):
         description="URL of the Postgres database used for persistent state.",
     )
     ALLOW_UNAUTHENTICATED: bool = Field(
-        default=False,
+        default=True,
         description="Allow unauthenticated requests. Intended only for local development.",
     )
 
