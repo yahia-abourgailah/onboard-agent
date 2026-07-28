@@ -10,6 +10,7 @@ Both paths are idempotent: init_db() only seeds when a table is empty.
 
 import sqlite3
 from collections.abc import Iterator
+from contextlib import closing
 
 from sqlmodel import Session, SQLModel, create_engine, select
 
@@ -61,12 +62,11 @@ def run_query(sql_query: str, path: str = DB_FILE) -> str:
         return "Only SELECT queries are allowed."
 
     try:
-        conn = sqlite3.connect(path)
-        conn.row_factory = sqlite3.Row
-        cur = conn.cursor()
-        cur.execute(sql_query)
-        rows = cur.fetchall()
-        conn.close()
+        with closing(sqlite3.connect(f"file:{path}?mode=ro", uri=True)) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute(sql_query)
+            rows = cur.fetchall()
     except sqlite3.Error as e:
         return f"SQL error: {e}"
 

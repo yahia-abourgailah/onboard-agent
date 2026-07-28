@@ -66,6 +66,15 @@ class Settings(BaseSettings):
     LANGSMITH_PROJECT: str = Field(default="")
     LANGSMITH_ENDPOINT: str = Field(default="")
 
+    POSTGRES_URL: str = Field(
+        default="postgresql://postgres:postgres@localhost:5432/postgres",
+        description="URL of the Postgres database used for persistent state.",
+    )
+    ALLOW_UNAUTHENTICATED: bool = Field(
+        default=False,
+        description="Allow unauthenticated requests. Intended only for local development.",
+    )
+
     @property
     def is_production(self) -> bool:
         return self.environment is Environment.PRODUCTION
