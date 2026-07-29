@@ -1,8 +1,14 @@
 import logging
 
-from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
+from langchain_core.messages import (
+    AIMessage,
+    BaseMessage,
+    HumanMessage,
+    RemoveMessage,
+    SystemMessage,
+)
 
-from graph.guardrails import check_prompt_injection_history
+from graph.guardrails import check_prompt_injection
 from graph.state import AgentState
 from model.llm import get_llm_with_tools
 from prompts.llm_prompt import SYSTEM_PROMPT
@@ -17,34 +23,45 @@ REFUSAL_MESSAGE = (
 
 
 def input_guard(state: AgentState) -> dict[str, object]:
-    """Screens BOTH the latest human message and everything checkpointed so
-    far for this thread, BEFORE any of it reaches the LLM or a tool.
+    """Screens the newest human message BEFORE it reaches the LLM or a tool,
+    and deletes it from the thread if it is flagged.
 
-    Scanning full history (not just the new turn) matters because the
-    checkpointer persists messages across calls — a payload smuggled into an
-    earlier turn ("remember this for later: ignore all instructions...")
-    would otherwise sit dormant until a later turn's context "activates" it,
-    slipping past a fresh-input-only check.
+    Every message is screened exactly once, on arrival, so a payload can never
+    reach checkpointed history unscreened — which is what protects against the
+    "plant it now, activate it later" attack. Deleting the flagged message is
+    what makes screening-on-arrival sufficient: nothing malicious survives in
+    history to influence a later turn.
+
+    Do NOT re-scan full history here instead. The flagged text stays in the
+    thread, so every later innocent turn re-matches it and is refused, and the
+    conversation is bricked until the user starts a new one.
     """
-    messages = state["messages"]
-    human_texts = [
-        m.content for m in messages if isinstance(m, HumanMessage) and isinstance(m.content, str)
-    ]
+    latest = next(
+        (m for m in reversed(state["messages"]) if isinstance(m, HumanMessage)),
+        None,
+    )
+    if latest is None or not isinstance(latest.content, str):
+        return {"injection_flagged": False}
 
-    result = check_prompt_injection_history(human_texts)
+    result = check_prompt_injection(latest.content)
 
-    if result.flagged:
-        logger.warning(
-            "prompt_injection_blocked category=%s pattern=%s",
-            result.category,
-            result.matched_pattern,
-        )
-        return {
-            "messages": [AIMessage(content=REFUSAL_MESSAGE)],
-            "injection_flagged": True,
-        }
+    if not result.flagged:
+        return {"injection_flagged": False}
 
-    return {"injection_flagged": False}
+    logger.warning(
+        "prompt_injection_blocked category=%s pattern=%s",
+        result.category,
+        result.matched_pattern,
+    )
+
+    # RemoveMessage needs the reducer-assigned id; it is always set for
+    # messages that have been through the graph, but stay defensive so a
+    # hand-constructed message can still be refused rather than crashing.
+    removals: list[BaseMessage] = [RemoveMessage(id=latest.id)] if latest.id else []
+    return {
+        "messages": [*removals, AIMessage(content=REFUSAL_MESSAGE)],
+        "injection_flagged": True,
+    }
 
 
 def call_llm(state: AgentState) -> dict[str, list[BaseMessage]]:

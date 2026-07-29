@@ -7,10 +7,28 @@ not a complete one — pair it with the system prompt's existing instruction to
 ignore embedded instructions in tool results, and consider adding an
 LLM-based classifier pass later for paraphrased/obfuscated attempts that slip
 past these patterns.
+
+Language coverage: the agent answers in English, Arabic and Franco-Arabic
+(Arabizi), so the patterns below cover all three. Arabic and Franco coverage
+is necessarily thinner than English — Franco has no fixed orthography, so the
+same phrase has many spellings and a regex set can only catch the common
+ones. Treat non-English coverage as best-effort; an LLM classifier is the
+real answer if this becomes a genuine attack surface.
+
+Tuning note: patterns are deliberately narrow. A false positive here refuses
+a real employee's onboarding question, which is a worse everyday outcome than
+missing one paraphrased attack that the system prompt's own rules still
+defend against. Anything matching ordinary onboarding phrasing ("act as a
+guide for my first day", "what are your instructions for new hires") must not
+trip these.
 """
 
 import re
 from dataclasses import dataclass
+
+# Alef appears as bare/hamza/madda forms and users type all of them
+# interchangeably, so match the whole family wherever a word starts with one.
+_ALEF = r"[أإآا]"
 
 # Each pattern targets a known injection family. Keep them named/grouped so a
 # failing test tells you *which* family regressed, not just "injection.py
@@ -21,28 +39,57 @@ _INSTRUCTION_OVERRIDE = [
     re.compile(r"forget\s+(everything|all|your\s+instructions)", re.I),
     re.compile(r"new\s+instructions?\s*:", re.I),
     re.compile(r"override\s+(your|the|all)\s+(rules|instructions|policy|policies)", re.I),
+    # Arabic: "تجاهل التعليمات/الأوامر", "انسى كل التعليمات", "تعليمات جديدة:"
+    re.compile(r"تجاهل\s+(كل\s+)?(ال)?(تعليمات|أوامر|اوامر|قواعد)"),
+    re.compile(rf"{_ALEF}نس[ىي]?\s+(كل\s+)?(ال)?(تعليمات|أوامر|اوامر|قواعد)"),
+    re.compile(r"(تعليمات|أوامر|اوامر)\s+جديدة\s*:"),
+    # Franco-Arabic: "tagahel el instructions", "ensa el rules", "mate3melsh el rules"
+    re.compile(r"\b(tagahel|tag2ahel|etgahel|itgahel)\b", re.I),
+    re.compile(r"\b(ensa|insa|ensi)\s+(kol\s+)?(el\s+)?(instructions|rules|awamer|ta3limat)", re.I),
+    re.compile(r"\bmate3melsh\s+(el\s+)?(instructions|rules|awamer|ta3limat)", re.I),
 ]
 
 _ROLE_HIJACK = [
     re.compile(r"you\s+are\s+now\s+", re.I),
-    re.compile(r"act\s+as\s+(a|an|if)\s+", re.I),
+    # Narrowed: only role *reassignment* onto an AI persona. Bare "act as a
+    # guide/mentor" is legitimate onboarding phrasing and must not match.
+    re.compile(
+        r"\bact\s+as\s+(an?\s+)?(ai\b|assistant|chatbot|language\s+model|model\b|dan\b)",
+        re.I,
+    ),
     re.compile(r"pretend\s+(you|to)\s+(are|be)\s+", re.I),
     re.compile(r"from\s+now\s+on\s*,?\s+you", re.I),
     re.compile(r"\bDAN\b|do\s+anything\s+now", re.I),
     re.compile(r"jailbreak", re.I),
+    # Arabic: "أنت الآن ...", "تظاهر أنك ...", "بدون قيود"
+    re.compile(rf"{_ALEF}نت\s+(ال[آا]ن|دلوقت[يى])"),
+    re.compile(rf"تظاهر\s+{_ALEF}ن[كك]"),
+    re.compile(r"بدون\s+(قيود|حدود|قواعد)"),
+    # Franco-Arabic: "enta delwa2ty assistant tany"
+    re.compile(r"\benta\s+(delwa2ty|dlw2ty|dilwa2ty|dlwa2ty)\b", re.I),
 ]
 
 _SYSTEM_PROMPT_EXTRACTION = [
     re.compile(r"(reveal|show|print|repeat|output)\s+(your|the)\s+(system\s+)?prompt", re.I),
-    re.compile(r"what\s+(are|is)\s+your\s+(system\s+)?instructions?", re.I),
+    # Narrowed with an explicit qualifier: "what are your instructions for new
+    # hires?" is a real question an intern asks and must not match.
+    re.compile(
+        r"what\s+(are|is)\s+your\s+(system|original|initial|exact|full)\s+(prompt|instructions?)",
+        re.I,
+    ),
     re.compile(r"repeat\s+everything\s+above", re.I),
+    # Arabic: "اظهر البرومبت", "ما هي تعليماتك"
+    re.compile(rf"({_ALEF}ظهر|{_ALEF}كتب|كرر)\s+(ال)?(برومبت|بروبت|تعليمات)"),
+    re.compile(r"ما\s+ه[يى]\s+تعليمات[كك]"),
 ]
 
 _FAKE_DELIMITERS = [
     # Fake role/message boundary tags trying to smuggle a new turn.
+    # NOTE: a bare "---" line was previously matched here and removed — it
+    # flagged ordinary Markdown horizontal rules in legitimate messages, and
+    # the explicit role tags below cover the realistic version of this attack.
     re.compile(r"</?\s*(system|assistant|developer)\s*>", re.I),
     re.compile(r"\[\s*(system|assistant|developer)\s*\]", re.I),
-    re.compile(r"^\s*---+\s*$", re.M),
 ]
 
 _PATTERN_GROUPS = {
@@ -84,12 +131,18 @@ def check_prompt_injection(text: str) -> GuardrailResult:
 
 
 def check_prompt_injection_history(texts: list[str]) -> GuardrailResult:
-    """Scan a list of user-supplied texts (e.g. every HumanMessage in a
-    checkpointed thread) and return the first match found.
+    """Scan several user-supplied texts and return the first match found.
 
-    Used to catch a payload planted in an earlier turn that only becomes
-    "active" once later context makes it relevant — a fresh-input-only check
-    would miss this since the injection text isn't in the newest message.
+    NOTE: this is NOT what the graph's input_guard uses, and it must not be
+    used to screen checkpointed history on every turn. Doing so permanently
+    bricks a thread: the offending message stays in history, so every later
+    innocent turn re-matches it and gets refused, with no way back except
+    starting a new conversation.
+
+    The graph instead screens each incoming message once and *deletes* a
+    flagged one from the thread (see graph/nodes.py), which gives the same
+    protection against a dormant payload without the poisoning. This helper
+    is kept for callers that need to scan a standalone batch of text.
     """
     for text in texts:
         result = check_prompt_injection(text)
