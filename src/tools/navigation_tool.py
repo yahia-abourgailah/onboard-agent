@@ -42,8 +42,10 @@ def get_office_directions(destination: str) -> str:
 
     Returns a route description and a link to a floor map image with that
     section highlighted, starting from the face ID gates at the entrance.
-    The image is shown to the user automatically — describe the route in
-    your own words, don't repeat the raw JSON or the url back to them.
+
+    The app displays that image to the user by itself. Retell the route in
+    your own words and nothing else — do not copy the JSON, the url, or a
+    markdown image like ![Floor Map](...) into your reply.
 
     Args:
         destination: The department or facility name the intern wants to reach.
