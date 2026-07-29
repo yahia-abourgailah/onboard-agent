@@ -37,12 +37,14 @@ def setup_middleware(app: FastAPI) -> None:
         start = time.perf_counter()
 
         auth_header = request.headers.get("Authorization")
-        credentials = None
+        token = None
         if auth_header is not None:
-            scheme, _, token = auth_header.partition(" ")
-            if scheme.lower() == "bearer" and token:
-                credentials = type("Cred", (), {"credentials": token})()
-        user_id = get_user_id(credentials)
+            scheme, _, raw_token = auth_header.partition(" ")
+            if scheme.lower() == "bearer":
+                token = raw_token
+        # Hashed at the boundary — `user_id` is safe to log and to keep as a
+        # rate-limit bucket key; the raw token never leaves this scope.
+        user_id = get_user_id(token)
         session_id = request.cookies.get("session_id") or "anonymous"
         key = (user_id, session_id)
 

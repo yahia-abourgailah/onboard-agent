@@ -72,8 +72,12 @@ class Settings(BaseSettings):
         description="URL of the Postgres database used for persistent state.",
     )
     ALLOW_UNAUTHENTICATED: bool = Field(
-        default=True,
-        description="Allow unauthenticated requests. Intended only for local development.",
+        default=False,
+        description=(
+            "Allow unauthenticated requests when API_TOKEN is unset. Local development "
+            "only, and only takes effect in the development environment. Defaults to "
+            "False so a deployment that forgets to configure API_TOKEN fails closed."
+        ),
     )
 
     @property
