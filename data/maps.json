@@ -1,0 +1,53 @@
+{
+  "tech": {
+    "route": "Right after the gates, Tech's desk area is immediately in front of you."
+  },
+  "business_dev": {
+    "route": "From the gates, walk left along the main aisle — the big Business Dev cluster is along the top wall; more Business Dev clusters sit in the middle rows."
+  },
+  "hr": {
+    "route": "Walk left along the main aisle to the middle of the floor — Human Resources has two clusters there, one behind the other."
+  },
+  "hr_marq": {
+    "route": "Walk left along the aisle almost to the end — Marq HR is the small cluster in the back row on the far-left side."
+  },
+  "hr_operations": {
+    "route": "Walk left along the aisle almost to the end — HR Operations is the small cluster next to Marq HR in the back row."
+  },
+  "it": {
+    "route": "Walk left along the main aisle — IT's desks are along the top wall, past Business Dev, next to Eclatic."
+  },
+  "eclatic": {
+    "route": "Walk left along the main aisle to the far end — Eclatic's desks are the first cluster along the top wall."
+  },
+  "finance": {
+    "route": "Walk left along the main aisle to the far end, then turn down into the wing — Finance fills the wing's desk rows."
+  },
+  "l_and_d": {
+    "route": "From the gates, head right past the elevators — the L&D room is the big room at the top-right corner with the three round tables."
+  },
+  "kitchen": {
+    "route": "The kitchen is right next to the elevators — fridge and microwaves are there."
+  },
+  "elevators": {
+    "route": "Head back through the gates — the 3 elevators are right there."
+  },
+  "stairs_main": {
+    "route": "From the gates, go past the elevators — the stairs are just beside them."
+  },
+  "toilets": {
+    "route": "From the gates, walk left along the top wall — the WC block is a short walk down, before the offices."
+  },
+  "offices": {
+    "route": "The private offices are along the top wall, past the WC block, toward the far end."
+  },
+  "meeting_rooms": {
+    "route": "Walk left along the main aisle all the way — the meeting rooms are on the far-left wall. There's also one at the end of the Finance wing."
+  },
+  "eclatic_meeting_rooms": {
+    "route": "Walk left along the main aisle to the far end — the Eclatic meeting rooms are the room at the top-left corner."
+  },
+  "gates": {
+    "route": "You're at the entrance — the face ID gates, right after the elevators."
+  }
+}
