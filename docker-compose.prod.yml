@@ -34,6 +34,15 @@ services:
       PUBLIC_API_BASE_URL: ${PUBLIC_API_BASE_URL:-http://localhost:8000}
     ports:
       - "8000:8000"
+    # Resolve via a public resolver rather than inheriting the host's.
+    # Split-horizon DNS is common on internal networks: the internal resolver
+    # is authoritative for the company zone but has no record for the LLM host,
+    # so it returns NXDOMAIN instead of forwarding, and OPENAI_BASE_URL fails
+    # to resolve inside the container. Service names (postgres, qdrant) are
+    # unaffected — Docker's embedded resolver handles those before this.
+    # Override with DOCKER_DNS if this network needs an internal resolver.
+    dns:
+      - ${DOCKER_DNS:-1.1.1.1}
     depends_on:
       postgres:
         condition: service_healthy

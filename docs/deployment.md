@@ -17,11 +17,29 @@ On the server:
 - **A reachable LLM endpoint** (vLLM, OpenAI-compatible)
 
 That last one is not optional. Without it the service starts and answers
-`/health`, but every `/chat` call returns `502`. Confirm it first:
+`/health`, but every `/chat` call returns `502`.
+
+**Test it from the server itself, not from your laptop.** This has bitten us:
+an endpoint reachable from a workstation was not reachable from the deployment
+host, because the LLM host allowlists source IPs. The symptom is TCP connecting
+while the TLS handshake never completes — `curl` sends its ClientHello and then
+hangs until timeout, rather than failing fast.
 
 ```bash
-curl -s http://<vllm-host>:8000/v1/models
+ssh <user>@<server>
+curl -sS --max-time 20 <OPENAI_BASE_URL>/v1/models -H "Authorization: Bearer <key>"
 ```
+
+If that hangs, the deployment host needs allowlisting on the LLM side — no
+amount of config here will fix it.
+
+**Split-horizon DNS.** If the LLM is addressed by hostname, check the server can
+resolve it. An internal resolver that is authoritative for the company zone but
+has no record for the LLM host returns NXDOMAIN rather than forwarding, so the
+name fails inside the container even though the internet works. The API service
+sets `dns: 1.1.1.1` for this reason; override with `DOCKER_DNS` if your network
+needs an internal resolver instead. Using a bare IP in `OPENAI_BASE_URL` avoids
+the issue entirely.
 
 Postgres and Qdrant are **not** prerequisites — Compose runs them for you.
 
@@ -101,6 +119,19 @@ docker compose -f docker-compose.prod.yml up -d --build
 First build takes roughly 5–10 minutes: it installs CPU-only PyTorch and bakes
 the embedding model into the image so the container never needs internet at
 runtime.
+
+**On a disk-constrained host, transfer the image instead of building it.** The
+build needs roughly 6–8 GB transient for the build cache, against a 2.1 GB
+final image. With less than ~10 GB free, build on a workstation and ship it:
+
+```bash
+# on your machine
+docker build -t onboard-agent:latest .
+docker save onboard-agent:latest | gzip -1 | ssh <user>@<server> 'gunzip | docker load'
+
+# on the server — no --build, so Compose uses the loaded image
+docker compose -f docker-compose.prod.yml up -d
+```
 
 **First startup is slow — 1 to 3 minutes.** Before serving traffic the app
 seeds the directory database, creates the checkpointer tables, and — if the
@@ -212,6 +243,8 @@ docker compose -f docker-compose.prod.yml exec api python -c \
 | Startup dies after ~30s, `PoolTimeout` | Postgres not reachable | `docker compose -f docker-compose.prod.yml ps` — Postgres should be `healthy` |
 | `500 API_TOKEN is not configured` | Container started without the token | Recreate: `up -d --force-recreate api` |
 | All `/chat` return `502` | LLM unreachable | Check `OPENAI_BASE_URL` (step 6) |
+| LLM curl hangs, TCP port is open | Server not allowlisted on the LLM host | Infra must permit the server's IP; not fixable here |
+| LLM host won't resolve in container | Split-horizon DNS | Use an IP in `OPENAI_BASE_URL`, or set `DOCKER_DNS` |
 | Browser: CORS error | Origin not allow-listed | Add it to `CORS_ALLOW_ORIGINS`, recreate |
 | Map images 404 in browser | `PUBLIC_API_BASE_URL` not browser-reachable | Set it to the server's real address |
 | `429` responses | Rate limit (20 req/min per token+session) | Raise `RATE_LIMIT_MAX_REQUESTS` |
