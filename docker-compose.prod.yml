@@ -1,0 +1,71 @@
+# Full-stack deployment for the internal demo.
+#
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# Differences from docker-compose.yml (local dev services only):
+#   - runs the API itself, not just its backing services
+#   - images are pinned, not :latest
+#   - Postgres and Qdrant are NOT published to the host; only the API is
+#   - every secret comes from .env, nothing is defaulted in this file
+#
+# Required in .env before starting — see .env.example:
+#   API_TOKEN, POSTGRES_PASSWORD, OPENAI_BASE_URL, CORS_ALLOW_ORIGINS
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: onboard-agent:latest
+    container_name: onboard-agent-api
+    environment:
+      ENVIRONMENT: production
+      # Fails closed: with ALLOW_UNAUTHENTICATED unset and API_TOKEN missing,
+      # the app returns 500 rather than serving unauthenticated. Deliberate —
+      # a missing token should stop the deploy, not silently open it up.
+      API_TOKEN: ${API_TOKEN:?API_TOKEN must be set}
+      POSTGRES_URL: postgresql://postgres:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/postgres
+      QDRANT_URL: http://qdrant:6333
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:?OPENAI_BASE_URL must be set}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      # JSON list, e.g. '["https://onboarding.internal"]'. Empty blocks all
+      # cross-origin calls, which will break a browser frontend.
+      CORS_ALLOW_ORIGINS: ${CORS_ALLOW_ORIGINS:-[]}
+      RATE_LIMIT_ENABLED: "true"
+      PUBLIC_API_BASE_URL: ${PUBLIC_API_BASE_URL:-http://localhost:8000}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17
+    container_name: onboard-agent-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # The API's startup calls checkpointer.setup(), which fails after a
+      # 30s pool timeout if Postgres isn't accepting connections yet.
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.4
+    container_name: onboard-agent-qdrant
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    restart: unless-stopped
+
+volumes:
+  qdrant_storage:
+  postgres_data:

@@ -1,0 +1,23 @@
+# Keep the build context small and free of local/secret state.
+.git
+.github
+.venv
+venv
+__pycache__
+**/__pycache__
+*.pyc
+.mypy_cache
+.ruff_cache
+.pytest_cache
+
+# Never bake secrets or local databases into an image.
+.env
+*.sqlite
+*.db
+
+tests
+docs
+uv.lock
+requirements.txt
+onboard-agent-tasks.csv
+floor.txt
