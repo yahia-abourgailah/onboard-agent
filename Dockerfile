@@ -19,7 +19,13 @@ COPY src/ ./src/
 # Install into a venv we can copy wholesale into the runtime stage.
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+
+# Install CPU-only torch FIRST so the sentence-transformers dependency is
+# already satisfied when the project installs. The default PyPI wheel bundles
+# CUDA and bloats the image from ~1.5GB to over 6GB — we embed on CPU and
+# never touch a GPU, so all of that is dead weight.
 RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir .
 
 
