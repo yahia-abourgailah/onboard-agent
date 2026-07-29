@@ -15,11 +15,11 @@ and the browser `EventSource` API only issues `GET` and cannot set an
 `Authorization` header. Use `fetch` with a `ReadableStream` reader instead.
 Working code below.
 
-**2. The streaming endpoint does not return floor maps.** `POST /chat` returns
-a `floor_map` object when the agent gives directions; `POST /chat/stream` emits
-only text tokens and never includes it. If your UI needs to render maps, either
-use the non-streaming endpoint, or detect the intent client-side and call
-`GET /floor-map` yourself. See [Choosing an endpoint](#choosing-an-endpoint).
+**2. The map arrives as its own event, not inside the text.** Both endpoints
+give you a `floor_map` object — `POST /chat` as a field on the JSON response,
+`POST /chat/stream` as a distinct SSE event. Handle the event type; do not try
+to parse the map out of the token stream, and do not guess the URL from the
+user's wording.
 
 **3. Session cookies are `httpOnly`.** The server issues `session_id` and
 `thread_id` as `httpOnly` cookies, so your JS cannot read them — and it does
@@ -67,14 +67,19 @@ Failure modes:
 
 | | `POST /chat` | `POST /chat/stream` |
 |---|---|---|
-| Response | One JSON object | SSE token stream |
+| Response | One JSON object | SSE event stream |
 | Feels responsive | No — waits for full answer | Yes |
-| Returns `floor_map` | **Yes** | **No** |
-| Best for | Anything showing maps | Plain text chat |
+| Returns `floor_map` | Yes, as a field | Yes, as an event |
+| Best for | Simple integrations, testing | **The chat UI** |
 
-The pragmatic combination for a demo: **stream the text**, and when the user
-asks a "where is X" question, call `GET /floor-map?highlight=<key>` directly to
-render the image. Or use `POST /chat` for everything and accept the wait.
+**Use `/chat/stream`.** It supports maps and the reply appears as it is
+generated. `/chat` is simpler if you just want one JSON blob — handy for
+testing with curl, or for a non-interactive caller.
+
+One nice property of the stream: the `floor_map` event is emitted the moment
+the navigation tool runs, which is *before* the model writes the route
+description. So you can render the map immediately and let the explanatory
+text stream in beneath it.
 
 ---
 
@@ -96,6 +101,8 @@ Content-Type: application/json
 followed by JSON, then a blank line. Three event types:
 
 ```
+data: {"type":"floor_map","destination":"hr","url":"http://localhost:8000/floor-map?highlight=hr","route":"Walk toward the center of the floor…"}
+
 data: {"type":"token","content":"HR "}
 
 data: {"type":"token","content":"is on "}
@@ -106,15 +113,18 @@ data: {"type":"done","session_id":"7f3a…","thread_id":"9c21…"}
 | `type` | Fields | Meaning |
 |---|---|---|
 | `token` | `content` | Append to the message being rendered |
+| `floor_map` | `destination`, `url`, `route` | Render the map image — see [Floor map](#floor-map) |
 | `done` | `session_id`, `thread_id` | Stream finished normally |
 | `error` | `detail` | Generation failed; stop and show an error |
 
-An `error` event is terminal — no `done` follows it.
+A `floor_map` event appears only when the agent gave directions, at most once
+per reply, and always **before** the tokens describing the route. An `error`
+event is terminal — no `done` follows it.
 
 ### Working client
 
 ```js
-async function streamChat(prompt, onToken) {
+async function streamChat(prompt, { onToken, onFloorMap }) {
   const res = await fetch(`${API_BASE}/chat/stream`, {
     method: "POST",
     headers: {
@@ -148,6 +158,7 @@ async function streamChat(prompt, onToken) {
 
       const payload = JSON.parse(line.slice(6));
       if (payload.type === "token") onToken(payload.content);
+      else if (payload.type === "floor_map") onFloorMap(payload); // render <img src={payload.url}>
       else if (payload.type === "error") throw new Error(payload.detail);
       else if (payload.type === "done") return payload; // {session_id, thread_id}
     }

@@ -8,7 +8,6 @@ import json
 import logging
 import uuid
 from collections.abc import Iterator, Sequence
-from typing import cast
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import Response as FastAPIResponse
@@ -19,7 +18,8 @@ from pydantic import BaseModel
 from api.metrics import log_request_metrics
 from api.security import verify_token
 from config import FLOOR_SVG_PATH, MAPS_JSON_PATH
-from graph.build_graph import invoke_graph, stream_graph_tokens
+from graph.build_graph import invoke_graph, stream_graph_events
+from tools.navigation_tool import NAVIGATION_TOOL_NAME, parse_floor_map
 
 router = APIRouter()
 logger = logging.getLogger("onboard_agent")
@@ -48,16 +48,10 @@ def _extract_floor_map(messages: Sequence[BaseMessage]) -> dict[str, object] | N
     turn's messages, if the agent called it, so the frontend can render the
     highlighted floor map instead of relying on the LLM to describe it."""
     for msg in reversed(messages):
-        if isinstance(msg, ToolMessage) and msg.name == "get_office_directions":
+        if isinstance(msg, ToolMessage) and msg.name == NAVIGATION_TOOL_NAME:
             if not isinstance(msg.content, str):
                 return None
-            try:
-                data = json.loads(msg.content)
-            except (json.JSONDecodeError, TypeError):
-                return None
-            if isinstance(data, dict) and data.get("type") == "floor_map":
-                return cast(dict[str, object], data)
-            return None
+            return parse_floor_map(msg.content)
     return None
 
 
@@ -139,8 +133,8 @@ def chat_stream(
 
     def events() -> Iterator[str]:
         try:
-            for token in stream_graph_tokens(request.prompt, thread_id):
-                yield _sse({"type": "token", "content": token})
+            for event in stream_graph_events(request.prompt, thread_id):
+                yield _sse(event)
 
         except Exception:
             logger.exception("Streaming chat request failed. thread_id=%s", thread_id)

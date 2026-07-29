@@ -3,6 +3,7 @@ from functools import lru_cache
 from typing import Any
 
 from dotenv import load_dotenv
+from langchain_core.messages import ToolMessage
 from langchain_core.runnables import Runnable, RunnableConfig
 from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
@@ -11,6 +12,7 @@ from graph.nodes import call_llm, input_guard
 from graph.state import AgentState
 from memory.checkpointer import checkpointer
 from tools import tools
+from tools.navigation_tool import NAVIGATION_TOOL_NAME, parse_floor_map
 
 load_dotenv()  # Loads variables from .env
 
@@ -47,16 +49,40 @@ def invoke_graph(question: str, thread_id: str) -> dict[str, Any]:
     return result
 
 
-def stream_graph_tokens(question: str, thread_id: str) -> Iterator[str]:
-    """Yield LLM text tokens from the agent graph (final assistant reply streams token-by-token)."""
+def stream_graph_events(question: str, thread_id: str) -> Iterator[dict[str, object]]:
+    """Yield streamable events from the agent graph.
+
+    Two kinds come out:
+      {"type": "token", "content": ...}  incremental text of the reply
+      {"type": "floor_map", ...}         the navigation tool's map payload,
+                                         identical to /chat's `floor_map`
+
+    The tool result is emitted as soon as the tool runs, which is *before* the
+    model has finished describing the route — so a client can render the map
+    while the surrounding text is still arriving.
+    """
     config = RunnableConfig(configurable={"thread_id": thread_id})
     for chunk, metadata in get_graph().stream(
         {"messages": [{"role": "user", "content": question}]},
         config=config,
         stream_mode="messages",
     ):
-        if metadata.get("langgraph_node") != "llm":
+        node = metadata.get("langgraph_node")
+
+        if node == "tools":
+            if (
+                isinstance(chunk, ToolMessage)
+                and chunk.name == NAVIGATION_TOOL_NAME
+                and isinstance(chunk.content, str)
+            ):
+                payload = parse_floor_map(chunk.content)
+                if payload is not None:
+                    yield payload
             continue
+
+        if node != "llm":
+            continue
+
         content = chunk.content
         if isinstance(content, str) and content:
-            yield content
+            yield {"type": "token", "content": content}
